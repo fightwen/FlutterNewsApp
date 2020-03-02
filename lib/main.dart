@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'dart:developer' as developer;
 
-import 'BookmarkPage.dart';
-import 'HomePage.dart';
-import 'SearchPage.dart';
-import 'SettingsPage.dart';
+import 'bookmark_page.dart';
+import 'home_page.dart';
+import 'search_page.dart';
+import 'settings_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'CNN',
+      title: 'News',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.red,
       ),
-      home: MyHomePage(title: 'CNN'),
+      home: MyHomePage(title: 'News'),
     );
   }
 }
@@ -86,7 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title:Center( child: Text(widget.title)), elevation: 0.0
       ),
       body: pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
