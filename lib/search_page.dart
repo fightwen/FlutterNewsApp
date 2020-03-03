@@ -15,10 +15,6 @@ class _SearchPageState extends State<SearchPage> {
       body: Center(
         child: Text("搜尋"),
       ),
-      floatingActionButton: FloatingActionButton(
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ),
     );
   }
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:developer' as developer;
 
-import 'bookmark_page.dart';
+import 'bookmark/bookmark_page.dart';
 import 'home_page.dart';
 import 'search_page.dart';
 import 'settings_page.dart';
@@ -51,7 +51,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
   int _selectedIndex = 0;
   static const double _iconSize = 30;
   final pages = [HomePage(), SearchPage(), BookmarkPage(), SettingsPage()];
@@ -64,7 +63,6 @@ class _MyHomePageState extends State<MyHomePage> {
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
       print('hello flutter GGG');
-      _counter++;
     });
   }
 
@@ -103,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
             title: Text('Search'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.bookmark_border,size: _iconSize,),
+            icon: Icon(Icons.bookmark,size: _iconSize,),
             title: Text('Bookmark'),
           ),
           BottomNavigationBarItem(
