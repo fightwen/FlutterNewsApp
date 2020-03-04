@@ -18,32 +18,57 @@ class BookmarkCardItem extends StatelessWidget {
       children: <Widget>[
         _buildImage(),
         Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Padding(
               padding: EdgeInsets.only(left: 10),
-              child: Text("Title"),
+              child: Text("Title",style: TextStyle(fontSize: 30)),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Padding(
-                    padding: EdgeInsets.only(left: 10),
-                    child:Text("Time")),
-                Align(
-                    alignment: Alignment.bottomRight,
-                    child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                    Icon(Icons.bookmark),
-                    Icon(Icons.share)
-                  ],)
-                  ,)
+            Container(
+              alignment: Alignment.centerRight,
+              color: Colors.yellow,
+              margin: EdgeInsets.all(0),
+              width: 250,
+              child:_buildRowIconsInItem() ,),
 
-            ],),
+
+
+              ],
+            ),
           ],
-        ),
+        );
 
+  }
+
+  Widget _buildRowIconsInItem(){
+    return  Row(
+      mainAxisSize:MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: <Widget>[
+//        Expanded(
+//          flex: 1,
+//          child: Container(
+//                  width: 200,
+//                  height: 200,
+//                  child: Padding(
+//                  padding: EdgeInsets.only(left: 10),
+//                  child:Text("Time",)
+//                ),
+//              ),
+//        ),
+
+
+        Container(
+            color: Colors.pink,
+            alignment: Alignment.centerRight,
+            margin: EdgeInsets.symmetric(horizontal: 0.0),
+            child:Icon(Icons.bookmark)),
+
+        Container(
+            alignment: Alignment.centerRight,
+            margin: EdgeInsets.symmetric(horizontal: 0.0),
+            child:Icon(Icons.share)),
       ],
     );
   }

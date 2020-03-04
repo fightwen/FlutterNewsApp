@@ -4,7 +4,7 @@ import 'dart:developer' as developer;
 import 'bookmark/bookmark_page.dart';
 import 'home_page.dart';
 import 'search_page.dart';
-import 'settings_page.dart';
+import 'setiing/settings_page.dart';
 
 void main() => runApp(MyApp());
 
