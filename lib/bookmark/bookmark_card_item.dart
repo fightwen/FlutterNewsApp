@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_news_app/news/news_detail_page.dart';
+import 'package:flutter_news_app/views/line_widget.dart';
 
 class BookmarkCardItem extends StatelessWidget {
 
@@ -50,13 +51,6 @@ class BookmarkCardItem extends StatelessWidget {
         context, MaterialPageRoute(builder: (context) => NewsDetailPageRoute()));
   }
 
-  Widget _buildLine(){
-    return Container(
-      height: 1.0,
-      width: double.infinity,
-      color: Colors.grey,
-    );
-  }
 
   Widget _buildTexts(){
     return Expanded(child: Padding(
@@ -96,7 +90,7 @@ class BookmarkCardItem extends StatelessWidget {
 
               ),
 
-              _buildLine()
+              LineWidget(Colors.grey[300])
             ],)
     );
   }
