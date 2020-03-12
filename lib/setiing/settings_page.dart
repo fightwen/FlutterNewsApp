@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_news_app/style/app_colors.dart';
 import 'package:flutter_news_app/views/line_widget.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -9,12 +10,15 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  static const double mainFontSize = 18;
+  static const double subFontSize = 12;
+
   Widget _buildText(String text, {String subText}) {
     Widget subTextWidget = subText == null
         ? Container()
         : Text(
             subText,
-            style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+            style: TextStyle(fontSize: subFontSize, color: Colors.grey[600]),
           );
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -58,32 +62,36 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Widget _buildTextBlackStyle(String text) {
-    return Text(text, style: TextStyle(fontSize: 20, color: Colors.black));
+    return Text(text, style: TextStyle(fontSize: mainFontSize, color: Colors.black));
   }
 
   Widget _buildVersionText(String version){
     return Padding(
       padding: EdgeInsets.only(top:16,bottom: 16),
-      child: Text(version, style: TextStyle(fontSize: 12, color: Colors.grey[600])),
+      child: Text(version, style: TextStyle(fontSize: subFontSize, color: Colors.grey[600])),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: EdgeInsets.only(left: 14, top: 14),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            _buildTextAndChooseBarWithLine(false, "Privacy Policy"),
-            _buildTextAndChooseBarWithLine(false, "Font Size",
-                subText: "Default"),
-            _buildTextAndChooseBarWithLine(true, "Reader Mode",
-                subText: "A text-only view of the Newsfeed"),
-            _buildVersionText("Version 6.7"),
-          ],
-        ));
+    return Container(
+      color: AppColors.backgroundColor,
+      child: Padding(
+          padding: EdgeInsets.only(left: 14, top: 14),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              _buildTextAndChooseBarWithLine(false, "Privacy Policy"),
+              _buildTextAndChooseBarWithLine(false, "Font Size",
+                  subText: "Default"),
+              _buildTextAndChooseBarWithLine(true, "Reader Mode",
+                  subText: "A text-only view of the Newsfeed"),
+              _buildVersionText("Version 6.7"),
+            ],
+          )
+      ),
+    );
   }
 
   //this goes in our State class as a global variable
@@ -98,8 +106,8 @@ class _SettingsPageState extends State<SettingsPage> {
           isSwitched = value;
         });
       },
-      activeTrackColor: Colors.lightGreenAccent,
-      activeColor: Colors.green,
+      activeTrackColor: Colors.red[100],
+      activeColor: Colors.red,
     );
   }
 }

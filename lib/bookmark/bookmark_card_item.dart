@@ -7,21 +7,23 @@ class BookmarkCardItem extends StatelessWidget {
 
   Widget _buildImage(){
     return Container(
+      alignment: Alignment.center,
       width: 100,
-      height: 100,
+      height: 80,
       color: Colors.pink,
       child: Image.network(
             'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/%E7%A6%8F%E5%B7%9E%E7%86%8A%E7%8C%AB%E4%B8%96%E7%95%8C-%E7%86%8A%E7%8C%AB%E5%B7%B4%E6%96%AF02.jpg/800px-%E7%A6%8F%E5%B7%9E%E7%86%8A%E7%8C%AB%E4%B8%96%E7%95%8C-%E7%86%8A%E7%8C%AB%E5%B7%B4%E6%96%AF02.jpg') ,);
   }
 
   Widget _buildRowIconsInItem(){
+    double timeFontSize = 14;
     return  Row(
       mainAxisSize:MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
 
         Expanded(
-          child:Text("Time",)
+          child:Text("Time",style: TextStyle(fontSize: timeFontSize))
         ),
 
         Container(
@@ -53,10 +55,11 @@ class BookmarkCardItem extends StatelessWidget {
 
 
   Widget _buildTexts(){
+    double titleFontSize = 18;
     return Expanded(child: Padding(
       padding: EdgeInsets.only(left: 10),
       child: Column(children: <Widget>[
-        Text("TitleTitleTitleTitleTitleTitleTitleTitleTitle",style: TextStyle(fontSize: 30)),
+        Text("TitleTitleTitleTitleTitleTitleTitleTitleTitle",style: TextStyle(fontSize: titleFontSize)),
         _buildRowIconsInItem()
       ],),
     ),);

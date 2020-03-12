@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_news_app/style/app_colors.dart';
 import 'news_card_item.dart';
 
 
@@ -17,7 +18,7 @@ class _NewsPageState extends State<NewsPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        color:Colors.grey[200],
+        color:AppColors.backgroundColor,
         child:RefreshIndicator(
             onRefresh: _onRefreshList,
             child:Center(
