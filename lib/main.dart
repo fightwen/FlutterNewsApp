@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'dart:developer' as developer;
 
-import 'BookmarkPage.dart';
-import 'HomePage.dart';
-import 'SearchPage.dart';
-import 'SettingsPage.dart';
+import 'bookmark/bookmark_page.dart';
+import 'home_page.dart';
+import 'search/search_page.dart';
+import 'setiing/settings_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'CNN',
+      title: 'News',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.red,
       ),
-      home: MyHomePage(title: 'CNN'),
+      home: MyHomePage(title: 'News'),
     );
   }
 }
@@ -51,7 +51,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
   int _selectedIndex = 0;
   static const double _iconSize = 30;
   final pages = [HomePage(), SearchPage(), BookmarkPage(), SettingsPage()];
@@ -64,7 +63,6 @@ class _MyHomePageState extends State<MyHomePage> {
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
       print('hello flutter GGG');
-      _counter++;
     });
   }
 
@@ -86,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title:Center( child: Text(widget.title)), elevation: 0.0
       ),
       body: pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -103,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
             title: Text('Search'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.bookmark_border,size: _iconSize,),
+            icon: Icon(Icons.bookmark,size: _iconSize,),
             title: Text('Bookmark'),
           ),
           BottomNavigationBarItem(
