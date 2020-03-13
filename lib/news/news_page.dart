@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_news_app/newwork/web_service.dart';
 import 'package:flutter_news_app/style/app_colors.dart';
+import 'data/NewsItem.dart';
 import 'news_card_item.dart';
 
 
@@ -23,18 +25,19 @@ class NewsPageListView extends StatefulWidget{
 }
 
 class _NewsPageListViewState extends State<NewsPageListView>{
+  List<ArticlesBean> _list = List<ArticlesBean>();
   Future<void> _onRefreshList() async {
 
   }
 
   ListView getListView() => ListView.builder(
-      itemCount: 100,
+      itemCount: _list.length,
       itemBuilder: (BuildContext context, int position) {
         return getRow(position);
       });
 
   Widget getRow(int i) {
-    return NewsCardItem();
+    return NewsCardItem(_list[i]);
   }
 
   @override
@@ -49,7 +52,11 @@ class _NewsPageListViewState extends State<NewsPageListView>{
   @override
   void initState() {
     super.initState();
+    Future<NewsItem> newsItem = Webservice().getPokemonsList(context);
 
+    setState(() {
+      newsItem.then((value) => _list = value.articles);
+    });
 
   }
 

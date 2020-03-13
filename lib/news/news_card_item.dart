@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'data/NewsItem.dart';
 import 'news_detail_page.dart';
 
 class NewsCardItem extends StatelessWidget {
+  ArticlesBean _item;
+  NewsCardItem(ArticlesBean item){
+    _item = item;
+  }
 
   Widget _buildCardImage() {
     return Stack(
@@ -24,7 +29,7 @@ class NewsCardItem extends StatelessWidget {
         Padding(
           padding: EdgeInsets.all(16.0),
           child: Text(
-            "TitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitleTitle",
+            _item.title,
             style: TextStyle(color: Colors.white, fontSize: 26.0),
             textAlign: TextAlign.justify,
             overflow: TextOverflow.ellipsis,
