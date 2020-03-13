@@ -3,28 +3,28 @@ import 'package:flutter_news_app/style/app_colors.dart';
 import 'news_card_item.dart';
 
 
-class NewsPage extends StatefulWidget{
-  @override
-  State<StatefulWidget> createState() {
-    return _NewsPageState();
-  }
-
-}
-
-class _NewsPageState extends State<NewsPage> {
-  Future<void> _onRefreshList() async{
-
-  }
+class NewsPage extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return Container(
         color:AppColors.backgroundColor,
-        child:RefreshIndicator(
-            onRefresh: _onRefreshList,
-            child:Center(
-            child: getListView(),
-        ))
+        child:NewsPageListView()
     );
+  }
+
+}
+
+class NewsPageListView extends StatefulWidget{
+  @override
+  State<StatefulWidget> createState() {
+    return _NewsPageListViewState();
+  }
+
+}
+
+class _NewsPageListViewState extends State<NewsPageListView>{
+  Future<void> _onRefreshList() async {
+
   }
 
   ListView getListView() => ListView.builder(
@@ -37,7 +37,25 @@ class _NewsPageState extends State<NewsPage> {
     return NewsCardItem();
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return RefreshIndicator(
+        onRefresh: _onRefreshList,
+        child:Center(
+          child: getListView(),
+        ));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+
+  }
+
+
 }
+
 
 
 
