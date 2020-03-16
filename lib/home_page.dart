@@ -11,16 +11,40 @@ class HomePage extends StatefulWidget{
 }
 
 class TabFullPageGenerater{
+  List<String> titles = ["Top","Business","Entertainment","Health","Science","Sports","Technology"];
+  List<String> keys = ["top","business","entertainment","health","science","sports","technology"];
+  TabFullPageGenerater(){
+
+  }
+
+  List<TabInfo> getTabInfo(){
+    List<TabInfo> tabs =List<TabInfo>();
+    for(int i = 0;i< keys.length;i++){
+      TabInfo info = TabInfo(keys[i],titles[i]);
+      tabs.add(info);
+    }
+    return tabs;
+  }
+
+
    List<Tab> getTabFullPages(){
      List<Tab> tabs =[];
-     List<String> titles = ["推薦","前端","後端","Android","iOS","人工智能","開發工具","代碼人生","閱讀"];
-
      for(int i = 0;i< titles.length;i++){
        tabs.add(Tab(child: Text(titles[i],style: TextStyle(color:Colors.black))));
      }
 
     return tabs;
   }
+}
+
+class TabInfo{
+  String mKey;
+  String mTitle;
+  TabInfo(String key,String title){
+    mKey = key;
+    mTitle = title;
+  }
+
 }
 
 class _HomePageState extends State<HomePage> {
@@ -40,7 +64,7 @@ class _HomePageState extends State<HomePage> {
         ),
         body: TabBarView(
           children: tabs.map((Tab tab) {
-            return new NewsPage();
+            return NewsPage();
           }).toList()
 
         ,

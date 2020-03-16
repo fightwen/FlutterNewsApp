@@ -3,19 +3,20 @@ import 'data/NewsItem.dart';
 import 'news_detail_page.dart';
 
 class NewsCardItem extends StatelessWidget {
-  ArticlesBean _item;
-  NewsCardItem(ArticlesBean item){
+  Articles _item;
+  NewsCardItem(Articles item){
     _item = item;
   }
 
   Widget _buildCardImage() {
+
+    String imgUrl = _item.urlToImage == null ? 'https://i.ytimg.com/vi/fq4N0hgOWzU/maxresdefault.jpg':_item.urlToImage;
     return Stack(
       alignment: AlignmentDirectional.bottomStart,
       children: <Widget>[
         ClipRRect(
           borderRadius: BorderRadius.circular(8.0),
-          child: Image.network(
-              'https://i.ytimg.com/vi/fq4N0hgOWzU/maxresdefault.jpg'),
+          child: Image.network(imgUrl),
         ),
         Container(
             width: double.infinity,
@@ -65,8 +66,9 @@ class NewsCardItem extends StatelessWidget {
   }
 
   void onPressedCard(BuildContext context) {
+    String url = _item.url == null ? "":_item.url;
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => NewsDetailPageRoute()));
+        context, MaterialPageRoute(builder: (context) => NewsDetailPageRoute(url)));
   }
 
   @override

@@ -24,11 +24,11 @@ class Webservice {
 //  }
 
   // Parses newsItems.json File
-  Future<NewsItem> getPokemonsList(BuildContext context) async {
+  Future<NewsItem> getNewsItemList(BuildContext context) async {
     String jsonString = await DefaultAssetBundle.of(context).loadString("assets/texts/newItems.json");
-    dynamic jsonData = jsonDecode(jsonString);
+    Map<String,dynamic> jsonData = jsonDecode(jsonString);
 
-    NewsItem newsItems = NewsItem.map(jsonData);
+    NewsItem newsItems = NewsItem.fromJson(jsonData);
     return newsItems;
   }
 }

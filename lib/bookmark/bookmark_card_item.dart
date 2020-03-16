@@ -49,8 +49,8 @@ class BookmarkCardItem extends StatelessWidget {
   }
 
   void onPressedCard(BuildContext context) {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => NewsDetailPageRoute()));
+//    Navigator.push(
+//        context, MaterialPageRoute(builder: (context) => NewsDetailPageRoute()));
   }
 
 

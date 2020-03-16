@@ -25,41 +25,40 @@ class NewsPageListView extends StatefulWidget{
 }
 
 class _NewsPageListViewState extends State<NewsPageListView>{
-  List<ArticlesBean> _list = List<ArticlesBean>();
-  Future<void> _onRefreshList() async {
 
+  Future<void> _onRefreshList() async {
+    setState(() {
+
+    });
   }
 
-  ListView getListView() => ListView.builder(
-      itemCount: _list.length,
+  ListView getListView(List<Articles> list) => ListView.builder(
+      itemCount: list.length,
       itemBuilder: (BuildContext context, int position) {
-        return getRow(position);
+        return getRow(list[position]);
       });
 
-  Widget getRow(int i) {
-    return NewsCardItem(_list[i]);
+  Widget getRow(Articles item) {
+    return NewsCardItem(item);
   }
 
   @override
   Widget build(BuildContext context) {
+    var service = Webservice();
     return RefreshIndicator(
         onRefresh: _onRefreshList,
         child:Center(
-          child: getListView(),
+          child: FutureBuilder<NewsItem>(
+              future:service.getNewsItemList(context),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) print(snapshot.error);
+                return snapshot.hasData
+                    ? getListView(snapshot.data.articles)
+                    : Center(child: CircularProgressIndicator());
+              }
+          ),
         ));
   }
-
-  @override
-  void initState() {
-    super.initState();
-    Future<NewsItem> newsItem = Webservice().getPokemonsList(context);
-
-    setState(() {
-      newsItem.then((value) => _list = value.articles);
-    });
-
-  }
-
 
 }
 
