@@ -25,6 +25,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   provider: ^3.1.0
   webview_flutter: ^0.3.19+9
+  transparent_image: ^1.0.0
 
 dev_dependencies:
   flutter_test:
@@ -45,6 +46,12 @@ flutter:
   # To add new items
   assets:
     - assets/texts/newItems.json
+    - assets/texts/newItemsBusiness.json
+    - assets/texts/newItemsEntertainment.json
+    - assets/texts/newItemsHealth.json
+    - assets/texts/newItemsScience.json
+    - assets/texts/newItemsSports.json
+    - assets/texts/newItemsTechnology.json
 
 
   # To add assets to your application, add an assets section, like this:

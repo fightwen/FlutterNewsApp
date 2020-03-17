@@ -6,25 +6,38 @@ import 'news_card_item.dart';
 
 
 class NewsPage extends StatelessWidget{
+  String qkey;
+  NewsPage({this.qkey});
+
   @override
   Widget build(BuildContext context) {
+    print("gggg NewsPageListView "+qkey);
     return Container(
         color:AppColors.backgroundColor,
-        child:NewsPageListView()
+        child:NewsPageListView(qkey: qkey)
     );
   }
 
 }
 
 class NewsPageListView extends StatefulWidget{
+
+  String qkey;
+
+  NewsPageListView({this.qkey});
+
   @override
   State<StatefulWidget> createState() {
-    return _NewsPageListViewState();
+    return _NewsPageListViewState(qkey: qkey);
   }
 
 }
 
 class _NewsPageListViewState extends State<NewsPageListView>{
+
+  String qkey;
+
+  _NewsPageListViewState({this.qkey});
 
   Future<void> _onRefreshList() async {
     setState(() {
@@ -49,7 +62,7 @@ class _NewsPageListViewState extends State<NewsPageListView>{
         onRefresh: _onRefreshList,
         child:Center(
           child: FutureBuilder<NewsItem>(
-              future:service.getNewsItemList(context),
+              future:service.getNewsItemList(context,qkey),
               builder: (context, snapshot) {
                 if (snapshot.hasError) print(snapshot.error);
                 return snapshot.hasData

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:transparent_image/transparent_image.dart';
 import 'data/NewsItem.dart';
 import 'news_detail_page.dart';
 
@@ -16,7 +17,10 @@ class NewsCardItem extends StatelessWidget {
       children: <Widget>[
         ClipRRect(
           borderRadius: BorderRadius.circular(8.0),
-          child: Image.network(imgUrl),
+          child: FadeInImage.memoryNetwork(
+            placeholder: kTransparentImage,
+            image: imgUrl,
+          ),
         ),
         Container(
             width: double.infinity,
@@ -56,7 +60,7 @@ class NewsCardItem extends StatelessWidget {
                   child: Icon(Icons.bookmark_border),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 20.0),
+                  padding: EdgeInsets.only(left: 20.0,right: 10.0),
                   child: Icon(Icons.share),
                 )
               ],)
@@ -67,8 +71,9 @@ class NewsCardItem extends StatelessWidget {
 
   void onPressedCard(BuildContext context) {
     String url = _item.url == null ? "":_item.url;
+    String title = _item.title == null ? "":_item.title;
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => NewsDetailPageRoute(url)));
+        context, MaterialPageRoute(builder: (context) => NewsDetailPageRoute(initialUrl:url,title: title,)));
   }
 
   @override
