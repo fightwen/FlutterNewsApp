@@ -6,31 +6,32 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_news_app/home/data/tab_page_generater.dart';
 import 'package:flutter_news_app/news/data/NewsItem.dart';
+import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 
 class Webservice {
+  bool isLocalTest = false;
+  Client client = Client();
 
-//  Future<NewsItem> fetchMovies(String keyword) async {
-//
-//    final url = "http://www.omdbapi.com/?s=$keyword&apikey=YOURAPIKEYHERE";
-//    final response = await http.get(url);
-//    if(response.statusCode == 200) {
-//
-//      final body = jsonDecode(response.body);
-//      final Iterable json = body["Search"];
-//      return json.map((movie) => Movie.fromJson(movie)).toList();
-//
-//    } else {
-//      throw Exception("Unable to perform request!");
-//    }
-//  }
+  Future<NewsItem> fetchNews(String qkey) async {
+
+    final url = "https://gitlab.com/fightmz/testinfo/-/raw/master/news_"+qkey+".json";
+    final response = await client.get(url);
+    if(response.statusCode == 200) {
+
+      final body = jsonDecode(response.body);
+      return NewsItem.fromJson(body);
+    } else {
+      throw Exception("Unable to perform request!");
+    }
+  }
 
   // Parses newsItems.json File
   Future<NewsItem> getNewsItemList(BuildContext context,String qkey) async {
-    bool isLocalTest = true;
     if(isLocalTest){
       return getNewsItemListFile(context,qkey);
     }
-    return getNewsItemListFile(context,qkey);
+    return fetchNews(qkey);
   }
 
   // Parses newsItems.json File

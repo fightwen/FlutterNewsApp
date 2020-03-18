@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_news_app/newwork/web_service.dart';
+import 'package:flutter_news_app/network/web_service.dart';
 import 'package:flutter_news_app/style/app_colors.dart';
+import 'package:flutter_news_app/views/network_error_widget.dart';
 import 'data/NewsItem.dart';
 import 'news_card_item.dart';
 
@@ -64,7 +65,7 @@ class _NewsPageListViewState extends State<NewsPageListView>{
           child: FutureBuilder<NewsItem>(
               future:service.getNewsItemList(context,qkey),
               builder: (context, snapshot) {
-                if (snapshot.hasError) print(snapshot.error);
+                if (snapshot.hasError) return NetworkErrorWidget();
                 return snapshot.hasData
                     ? getListView(snapshot.data.articles)
                     : Center(child: CircularProgressIndicator());

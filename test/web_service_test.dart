@@ -6,17 +6,65 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_news_app/home/data/tab_page_generater.dart';
 import 'package:flutter_news_app/home/home_page.dart';
+import 'package:flutter_news_app/network/web_service.dart';
 import 'package:flutter_news_app/news/data/NewsItem.dart';
-import 'package:flutter_news_app/newwork/web_service.dart';
 import 'package:flutter_news_app/todo_list.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:flutter_news_app/main.dart';
+import 'package:http/http.dart';
+import 'package:http/testing.dart';
 
 void main() {
+
+  testWidgets('WebService fetchNews test', (WidgetTester tester) async {
+
+    await tester.pumpWidget(
+      Builder(
+        builder: (BuildContext context) {
+          var service = Webservice();
+
+          //success
+          service.client = MockClient((request) async {
+            final mapJson = await DefaultAssetBundle.of(context).loadString(service.mappingLoadingNewsJson(KEY_TOP));
+            return Response(jsonEncode(mapJson),200);
+
+
+          });
+
+          var result = service.fetchNews(KEY_TOP);
+          result.then((value) =>{
+             expect(value.status, "ok")
+          } );
+
+          //error
+          service.client = MockClient((request) async {
+            final mapJson = await DefaultAssetBundle.of(context).loadString(service.mappingLoadingNewsJson(""));
+            return Response(jsonEncode(mapJson),400);
+
+
+          });
+
+          result = service.fetchNews("");
+          result.catchError((error){
+            expect(error!=null, true);
+          });
+
+
+          // The builder function must return a widget.
+          return Placeholder();
+        },
+      ),
+    );
+
+  });
+
+
   testWidgets('WebService getNewsItemListFile test', (WidgetTester tester) async {
 
     await tester.pumpWidget(

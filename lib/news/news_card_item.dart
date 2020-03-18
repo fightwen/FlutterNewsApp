@@ -1,25 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'data/NewsItem.dart';
+import 'news_bookmark_icon.dart';
 import 'news_detail_page.dart';
+import 'news_share_icon.dart';
 
 class NewsCardItem extends StatelessWidget {
   Articles _item;
-  NewsCardItem(Articles item){
+  double radius = 8.0;
+
+  NewsCardItem(Articles item) {
     _item = item;
   }
 
-  Widget _buildCardImage() {
+  String getImageUrl(String urlToImage) {
+    String imgUrl = urlToImage == null
+        ? 'https://rent.dyu.edu.tw/Picture/00/0.jpg'
+        : _item.urlToImage;
+    return imgUrl;
+  }
 
-    String imgUrl = _item.urlToImage == null ? 'https://i.ytimg.com/vi/fq4N0hgOWzU/maxresdefault.jpg':_item.urlToImage;
+  Widget _buildCardImage() {
     return Stack(
       alignment: AlignmentDirectional.bottomStart,
       children: <Widget>[
         ClipRRect(
-          borderRadius: BorderRadius.circular(8.0),
+          borderRadius: BorderRadius.circular(radius),
           child: FadeInImage.memoryNetwork(
             placeholder: kTransparentImage,
-            image: imgUrl,
+            image: getImageUrl(_item.urlToImage),
           ),
         ),
         Container(
@@ -29,8 +38,7 @@ class NewsCardItem extends StatelessWidget {
                 gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    colors: [Colors.transparent, Colors.black87]))
-        ),
+                    colors: [Colors.transparent, Colors.black87]))),
         Padding(
           padding: EdgeInsets.all(16.0),
           child: Text(
@@ -41,39 +49,51 @@ class NewsCardItem extends StatelessWidget {
             maxLines: 2,
           ),
         ),
-
       ],
     );
   }
 
   Widget _buildCardItems() {
+    double iconWidthHeight = 24;
+    double iconSize = 22;
     return Column(
       children: <Widget>[
         _buildCardImage(),
         Padding(
-            padding: EdgeInsets.all(12.0),
+            padding: EdgeInsets.all(16),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.all(0.0),
-                  child: Icon(Icons.bookmark_border),
+                NewsBookmarkIcon(
+                  width: iconWidthHeight,
+                  height: iconWidthHeight,
+                  iconSize: iconSize,
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 20.0,right: 10.0),
-                  child: Icon(Icons.share),
+                  padding: EdgeInsets.only(left: 20, right: 8),
+                  child: NewsShareIcon(
+                      width: iconWidthHeight,
+                      height: iconWidthHeight,
+                      iconSize: iconSize,
+                      title: _item.title,
+                      initialUrl: _item.url),
                 )
-              ],)
-        )
+              ],
+            ))
       ],
     );
   }
 
   void onPressedCard(BuildContext context) {
-    String url = _item.url == null ? "":_item.url;
-    String title = _item.title == null ? "":_item.title;
+    String url = _item.url == null ? "" : _item.url;
+    String title = _item.title == null ? "" : _item.title;
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => NewsDetailPageRoute(initialUrl:url,title: title,)));
+        context,
+        MaterialPageRoute(
+            builder: (context) => NewsDetailPageRoute(
+                  initialUrl: url,
+                  title: title,
+                )));
   }
 
   @override
@@ -83,11 +103,9 @@ class NewsCardItem extends StatelessWidget {
         child: Card(
           margin: EdgeInsets.all(8.0),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.0),
+            borderRadius: BorderRadius.circular(radius),
           ),
           child: _buildCardItems(),
-        )
-    );
+        ));
   }
-
 }
