@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'news/news_page.dart';
+import '../news/news_page.dart';
+import 'data/tab_page_generater.dart';
 
 class HomePage extends StatefulWidget{
   @override
@@ -10,24 +11,21 @@ class HomePage extends StatefulWidget{
 
 }
 
-class TabFullPageGenerater{
-   List<Tab> getTabFullPages(){
-     List<Tab> tabs =[];
-     List<String> titles = ["推薦","前端","後端","Android","iOS","人工智能","開發工具","代碼人生","閱讀"];
-
-     for(int i = 0;i< titles.length;i++){
-       tabs.add(Tab(child: Text(titles[i],style: TextStyle(color:Colors.black))));
-     }
-
-    return tabs;
+List<Tab> getTabFullPages(List<TabInfo> tabInfos){
+  List<Tab> tabs =[];
+  for(int i = 0;i< tabInfos.length;i++){
+    tabs.add(Tab(child: Text(tabInfos[i].mTitle,style: TextStyle(color:Colors.black))));
   }
+
+  return tabs;
 }
 
 class _HomePageState extends State<HomePage> {
-  TabFullPageGenerater tabFullPageGenerater = TabFullPageGenerater();
+
   @override
   Widget build(BuildContext context) {
-    List<Tab> tabs = tabFullPageGenerater.getTabFullPages();
+    List<TabInfo> tabInfos = TabFullPageGenerater.tabInfos;
+    List<Tab> tabs = getTabFullPages(tabInfos);
     return DefaultTabController(
       length: tabs.length,
       child: Scaffold(
@@ -39,8 +37,13 @@ class _HomePageState extends State<HomePage> {
           tabs: tabs,
         ),
         body: TabBarView(
-          children: tabs.map((Tab tab) {
-            return new NewsPage();
+          children: tabInfos.map((TabInfo info) {
+            if(info.mKey!=null){
+              return NewsPage(qkey:info.mKey);
+            }else{
+              return Center(child: Icon(Icons.not_interested),);
+            }
+
           }).toList()
 
         ,

@@ -82,9 +82,9 @@ class SettingStalessPage extends StatelessWidget{
 
   void onPressCallBack(BuildContext context){
 
-    Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
-      return new NewsDetailPageRoute();
-    },));
+//    Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
+//      return new NewsDetailPageRoute();
+//    },));
 
 //      Navigator.push(context, MaterialPageRoute(builder: (context) => NewsDetailPageRoute()));
   }
@@ -187,9 +187,9 @@ class _SettingsPageState extends State<SettingsPage> {
 
   void onPressCallBack(){
 
-    Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
-      return new NewsDetailPageRoute();
-    },));
+//    Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
+//      return new NewsDetailPageRoute();
+//    },));
 
 //      Navigator.push(context, MaterialPageRoute(builder: (context) => NewsDetailPageRoute()));
   }

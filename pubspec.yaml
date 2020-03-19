@@ -23,6 +23,13 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
+  provider: ^3.1.0
+  webview_flutter: ^0.3.19+9
+  transparent_image: ^1.0.0
+  flutter_share: ^1.0.2+1
+  http: ^0.12.0+4
+  sqflite:
+  path:
 
 dev_dependencies:
   flutter_test:
@@ -39,6 +46,18 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  # To add new items
+  assets:
+    - assets/texts/newItems.json
+    - assets/texts/newItemsBusiness.json
+    - assets/texts/newItemsEntertainment.json
+    - assets/texts/newItemsHealth.json
+    - assets/texts/newItemsScience.json
+    - assets/texts/newItemsSports.json
+    - assets/texts/newItemsTechnology.json
+    - assets/images/no_connection.png
+
 
   # To add assets to your application, add an assets section, like this:
   # assets:

@@ -1,58 +1,78 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_news_app/network/web_service.dart';
 import 'package:flutter_news_app/style/app_colors.dart';
+import 'package:flutter_news_app/views/network_error_widget.dart';
+import 'data/NewsItem.dart';
 import 'news_card_item.dart';
 
 
 class NewsPage extends StatelessWidget{
+  String qkey;
+  NewsPage({this.qkey});
+
   @override
   Widget build(BuildContext context) {
+    print("gggg NewsPageListView "+qkey);
     return Container(
         color:AppColors.backgroundColor,
-        child:NewsPageListView()
+        child:NewsPageListView(qkey: qkey)
     );
   }
 
 }
 
 class NewsPageListView extends StatefulWidget{
+
+  String qkey;
+
+  NewsPageListView({this.qkey});
+
   @override
   State<StatefulWidget> createState() {
-    return _NewsPageListViewState();
+    return _NewsPageListViewState(qkey: qkey);
   }
 
 }
 
 class _NewsPageListViewState extends State<NewsPageListView>{
-  Future<void> _onRefreshList() async {
 
+  String qkey;
+
+  _NewsPageListViewState({this.qkey});
+
+  Future<void> _onRefreshList() async {
+    setState(() {
+
+    });
   }
 
-  ListView getListView() => ListView.builder(
-      itemCount: 100,
+  ListView getListView(List<Articles> list) => ListView.builder(
+      itemCount: list.length,
       itemBuilder: (BuildContext context, int position) {
-        return getRow(position);
+        return getRow(list[position]);
       });
 
-  Widget getRow(int i) {
-    return NewsCardItem();
+  Widget getRow(Articles item) {
+    return NewsCardItem(item);
   }
 
   @override
   Widget build(BuildContext context) {
+    var service = Webservice();
     return RefreshIndicator(
         onRefresh: _onRefreshList,
         child:Center(
-          child: getListView(),
+          child: FutureBuilder<NewsItem>(
+              future:service.getNewsItemList(context,qkey),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) return NetworkErrorWidget();
+                return snapshot.hasData
+                    ? getListView(snapshot.data.articles)
+                    : Center(child: CircularProgressIndicator());
+              }
+          ),
         ));
   }
-
-  @override
-  void initState() {
-    super.initState();
-
-
-  }
-
 
 }
 
