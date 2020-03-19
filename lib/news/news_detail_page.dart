@@ -56,9 +56,7 @@ class _NewsDetailPageRouteState extends State<NewsDetailPageRoute> {
   Widget _buildLoadingWebview(){
     return Stack(
       children: <Widget>[
-        Expanded(
-          child: _buildWebview(),
-        ),
+        _buildWebview(),
         Center(
           child: CircularProgressIndicator(),
         )
@@ -69,9 +67,7 @@ class _NewsDetailPageRouteState extends State<NewsDetailPageRoute> {
   Widget _buildLoadedWebview(){
     return Stack(
       children: <Widget>[
-        Expanded(
-          child: _buildWebview(),
-        ),
+        _buildWebview(),
       ],
     );
   }
