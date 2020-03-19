@@ -4,16 +4,19 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class NewsDatabase{
+  static String TABLE_NAME = "news";
+  static Future<Database> database;
 
-  void init() async {
-    final Future<Database> database = openDatabase(
+  static void init() async {
+    database = openDatabase(
       // Set the path to the database. Note: Using the `join` function from the
       // `path` package is best practice to ensure the path is correctly
       // constructed for each platform.
       join(await getDatabasesPath(), 'news_database.db'),
       onCreate: (db, version) {
         return db.execute(
-          "CREATE TABLE news(id INTEGER PRIMARY KEY, name TEXT, age INTEGER)",
+          "CREATE TABLE " + TABLE_NAME + "(name TEXT PRIMARY KEY, savedAt INTEGER, title TEXT,"
+              " urlToImage TEXT, url TEXT, publishedAt TEXT, description TEXT, content TEXT, author TEXT)",
         );
       },
       // Set the version. This executes the onCreate function and provides a
@@ -21,85 +24,156 @@ class NewsDatabase{
       version: 1,
     );
 
+  }
+
+  static Future<void> insertNews(NewsBookmarkDBItem newsBookmarkItem) async {
+    if(database == null){
+      init();
+    }
 
 
-    Future<void> insertDog(Dog dog) async {
-      // Get a reference to the database.
-      final Database db = await database;
+    // Get a reference to the database.
+    final Database db = await database;
 
-      // Insert the Dog into the correct table. Also specify the
-      // `conflictAlgorithm`. In this case, if the same dog is inserted
-      // multiple times, it replaces the previous data.
-      await db.insert(
-        'dogs',
-        dog.toMap(),
-        conflictAlgorithm: ConflictAlgorithm.replace,
+    // Insert the NewsBookmarkItem into the correct table. Also specify the
+    // `conflictAlgorithm`. In this case, if the same dog is inserted
+    // multiple times, it replaces the previous data.
+    await db.insert(
+      TABLE_NAME,
+      newsBookmarkItem.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  static Future<List<NewsBookmarkDBItem>> news() async {
+    if(database == null){
+      init();
+    }
+
+
+    // Get a reference to the database.
+    final Database db = await database;
+
+    if(db == null)
+      return null;
+
+    // Query the table for all The Dogs.
+    final List<Map<String, dynamic>> maps = await db.query(TABLE_NAME);
+
+    if(maps == null)
+      return null;
+
+    // Convert the List<Map<String, dynamic> into a List<NewsBookmarkItem>.
+    return List.generate(maps.length, (i) {
+      return NewsBookmarkDBItem(
+        name: maps[i]['name'],
+        title: maps[i]['title'],
+        urlToImage: maps[i]['urlToImage'],
+        url: maps[i]['url'],
+        savedAt: maps[i]['savedAt'],
+        description: maps[i]['description'],
+        author: maps[i]['author'],
+        content: maps[i]['content'],
       );
-    }
+    });
+  }
 
-    Future<List<Dog>> dogs() async {
-      // Get a reference to the database.
-      final Database db = await database;
-
-      // Query the table for all The Dogs.
-      final List<Map<String, dynamic>> maps = await db.query('dogs');
-
-      // Convert the List<Map<String, dynamic> into a List<Dog>.
-      return List.generate(maps.length, (i) {
-        return Dog(
-          id: maps[i]['id'],
-          name: maps[i]['name'],
-          age: maps[i]['age'],
-        );
-      });
-    }
-
-    Future<void> updateDog(Dog dog) async {
-      // Get a reference to the database.
-      final db = await database;
-
-      // Update the given Dog.
-      await db.update(
-        'dogs',
-        dog.toMap(),
-        // Ensure that the Dog has a matching id.
-        where: "id = ?",
-        // Pass the Dog's id as a whereArg to prevent SQL injection.
-        whereArgs: [dog.id],
-      );
-    }
-
-    Future<void> deleteDog(int id) async {
-      // Get a reference to the database.
-      final db = await database;
-
-      // Remove the Dog from the database.
-      await db.delete(
-        'dogs',
-        // Use a `where` clause to delete a specific dog.
-        where: "id = ?",
-        // Pass the Dog's id as a whereArg to prevent SQL injection.
-        whereArgs: [id],
-      );
+  static Future<List<String>> newsNames() async {
+    if(database == null){
+      init();
     }
 
 
+    // Get a reference to the database.
+    final Database db = await database;
+
+    if(db == null)
+      return null;
+
+    // Query the table for all The Dogs.
+    final List<Map<String, dynamic>> maps = await db.query(TABLE_NAME);
+
+    if(maps == null)
+      return null;
+
+    // Convert the List<Map<String, dynamic> into a List<NewsBookmarkItem>.
+    return List.generate(maps.length, (i) {
+      return maps[i]['name'];
+    });
+  }
+
+  static Future<void> updateNews(NewsBookmarkDBItem newsBookmarkItem) async {
+    if(database == null){
+      init();
+    }
+
+    // Get a reference to the database.
+    final db = await database;
+
+    // Update the given Dog.
+    await db.update(
+      TABLE_NAME,
+      newsBookmarkItem.toMap(),
+      // Ensure that the Dog has a matching id.
+      where: "name = ?",
+      // Pass the Dog's id as a whereArg to prevent SQL injection.
+      whereArgs: [newsBookmarkItem.name],
+    );
+  }
+
+  static Future<void> deleteNews(String name) async {
+    if(database == null){
+      init();
+    }
+
+    // Get a reference to the database.
+    final db = await database;
+
+    // Remove the Dog from the database.
+    await db.delete(
+      TABLE_NAME,
+      // Use a `where` clause to delete a specific dog.
+      where: "name = ?",
+      // Pass the Dog's id as a whereArg to prevent SQL injection.
+      whereArgs: [name],
+    );
   }
 
 }
 
-class Dog {
-  final int id;
+class NewsBookmarkDBItem {
   final String name;
-  final int age;
+  final String title;
+  final String urlToImage;
+  final String url;
+  final String publishedAt;
+  final String description;
+  final String content;
+  final String author;
+  final int savedAt;
 
-  Dog({this.id, this.name, this.age});
+  NewsBookmarkDBItem({
+    this.name,
+    this.title,
+    this.urlToImage,
+    this.url,
+    this.savedAt,
+    this.publishedAt,
+    this.description,
+    this.author,
+    this.content});
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
       'name': name,
-      'age': age,
+      'title': title,
+      'urlToImage': urlToImage,
+      'savedAt': savedAt,
+      'url': url,
+      'publishedAt': publishedAt,
+      'description': description,
+      'author': author,
+      'content': content,
     };
   }
 
@@ -107,6 +181,6 @@ class Dog {
   // each dog when using the print statement.
   @override
   String toString() {
-    return 'Dog{id: $id, name: $name, age: $age}';
+    return 'NewsBookmarkItem{ name: $name, title: $title, urlToImage: $urlToImage, savedAt: $savedAt, url: $url, publishedAt: $publishedAt,description: $description, content: $content, author: $author}';
   }
 }

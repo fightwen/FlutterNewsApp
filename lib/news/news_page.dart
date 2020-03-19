@@ -3,6 +3,7 @@ import 'package:flutter_news_app/network/web_service.dart';
 import 'package:flutter_news_app/style/app_colors.dart';
 import 'package:flutter_news_app/views/network_error_widget.dart';
 import 'data/NewsItem.dart';
+import 'data/NewsUIItem.dart';
 import 'news_card_item.dart';
 
 
@@ -46,14 +47,17 @@ class _NewsPageListViewState extends State<NewsPageListView>{
     });
   }
 
-  ListView getListView(List<Articles> list) => ListView.builder(
+  ListView getListView(List<NewsArticleUIItem> list) => ListView.builder(
       itemCount: list.length,
       itemBuilder: (BuildContext context, int position) {
         return getRow(list[position]);
       });
 
-  Widget getRow(Articles item) {
-    return NewsCardItem(item);
+  Widget getRow(NewsArticleUIItem item) {
+    if(item!=null){
+      return NewsCardItem(item:item);
+    }
+    return Container();
   }
 
   @override
@@ -62,12 +66,17 @@ class _NewsPageListViewState extends State<NewsPageListView>{
     return RefreshIndicator(
         onRefresh: _onRefreshList,
         child:Center(
-          child: FutureBuilder<NewsItem>(
-              future:service.getNewsItemList(context,qkey),
+          child: FutureBuilder<List<NewsArticleUIItem>>(
+              future:service.getNewsArticleUIItemList(context,qkey),
               builder: (context, snapshot) {
+                print("data!!!!"+(snapshot.data!=null).toString());
+                if(snapshot.data!=null){
+                  print("data length !!!!"+(snapshot.data.length).toString());
+                }
+
                 if (snapshot.hasError) return NetworkErrorWidget();
-                return snapshot.hasData
-                    ? getListView(snapshot.data.articles)
+                return snapshot.hasData && snapshot.data!=null && snapshot.data.length !=0
+                    ? getListView(snapshot.data)
                     : Center(child: CircularProgressIndicator());
               }
           ),

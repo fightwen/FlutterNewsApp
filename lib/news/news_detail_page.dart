@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_news_app/database/news_database.dart';
 import 'package:flutter_news_app/tool/share_tool.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -8,12 +9,13 @@ import 'news_share_icon.dart';
 class NewsDetailPageRoute extends StatefulWidget {
   String initialUrl;
   String title;
+  NewsBookmarkDBItem newsBookmarkDBItem;
 
-  NewsDetailPageRoute({this.initialUrl, this.title});
+  NewsDetailPageRoute({this.initialUrl, this.title,this.newsBookmarkDBItem});
 
   @override
   State<StatefulWidget> createState() {
-    return _NewsDetailPageRouteState(initialUrl: initialUrl, title: title);
+    return _NewsDetailPageRouteState(initialUrl: initialUrl, title: title,newsBookmarkDBItem: newsBookmarkDBItem);
   }
 }
 
@@ -22,38 +24,45 @@ class _NewsDetailPageRouteState extends State<NewsDetailPageRoute> {
   String title;
   bool isLoaded = false;
   bool _isLoadingPage = true;
-  _NewsDetailPageRouteState({this.initialUrl, this.title});
+  NewsBookmarkDBItem newsBookmarkDBItem;
+
+  _NewsDetailPageRouteState({this.initialUrl, this.title,this.newsBookmarkDBItem});
 
   @override
   Widget build(BuildContext context) {
     return _buildFullSecondPage(context);
   }
 
-
   Widget _buildFullSecondPage(BuildContext context) {
     double iconWidthHeightSize = 30;
+    bool isAdded = false;
     return Scaffold(
         appBar: AppBar(
           title: Text(title),
           actions: [
-            Padding(padding: EdgeInsets.only(right: 16),
-              child: NewsShareIcon(width: iconWidthHeightSize,
+            Padding(
+              padding: EdgeInsets.only(right: 16),
+              child: NewsShareIcon(
+                  width: iconWidthHeightSize,
                   height: iconWidthHeightSize,
                   iconSize: iconWidthHeightSize,
                   title: title,
-                  initialUrl: initialUrl),),
-            Padding(padding: EdgeInsets.only(right: 18),
-                child: NewsBookmarkIcon(width: iconWidthHeightSize,
+                  initialUrl: initialUrl),
+            ),
+            Padding(
+                padding: EdgeInsets.only(right: 18),
+                child: NewsBookmarkIcon(
+                    width: iconWidthHeightSize,
                     height: iconWidthHeightSize,
-                    iconSize: iconWidthHeightSize)),
+                    iconSize: iconWidthHeightSize,
+                    isAdded: isAdded,
+                    newsBookmarkDBItem: newsBookmarkDBItem)),
           ],
         ),
-        body: _isLoadingPage ? _buildLoadingWebview() : _buildLoadedWebview()
-    );
+        body: _isLoadingPage ? _buildLoadingWebview() : _buildLoadedWebview());
   }
 
-
-  Widget _buildLoadingWebview(){
+  Widget _buildLoadingWebview() {
     return Stack(
       children: <Widget>[
         _buildWebview(),
@@ -64,7 +73,7 @@ class _NewsDetailPageRouteState extends State<NewsDetailPageRoute> {
     );
   }
 
-  Widget _buildLoadedWebview(){
+  Widget _buildLoadedWebview() {
     return Stack(
       children: <Widget>[
         _buildWebview(),

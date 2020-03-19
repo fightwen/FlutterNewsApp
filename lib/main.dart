@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:developer' as developer;
 
 import 'bookmark/bookmark_page.dart';
+import 'database/news_database.dart';
 import 'home/home_page.dart';
 import 'search/search_page.dart';
 import 'setting/settings_page.dart';
@@ -12,6 +13,7 @@ void main() => runApp(NewsApp());
 class NewsApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    NewsDatabase.init();
     return MaterialApp(
       title: 'News',
       theme: ThemeData(
