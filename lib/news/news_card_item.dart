@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_news_app/database/news_database.dart';
+import 'package:flutter_news_app/tool/md5_tool.dart';
 import 'package:transparent_image/transparent_image.dart';
+import 'bookmark_inheritedwidget.dart';
 import 'data/NewsItem.dart';
 import 'data/NewsUIItem.dart';
 import 'news_bookmark_icon.dart';
@@ -55,7 +57,7 @@ class NewsCardItem extends StatelessWidget {
 
   NewsBookmarkDBItem _getNewsBookmarkDBItem(Articles articles){
     return NewsBookmarkDBItem(
-        name: articles.source.name,
+        name: generateMd5(articles.title == null?"":articles.title),
         author: articles.author,
         publishedAt: articles.publishedAt,
         url: articles.url,
@@ -68,7 +70,7 @@ class NewsCardItem extends StatelessWidget {
   Widget _buildCardItems() {
     double iconWidthHeight = 24;
     double iconSize = 22;
-
+    NewsBookmarkDBItem dbItem = _getNewsBookmarkDBItem(item.articlesFromServer);
     return Column(
       children: <Widget>[
         _buildCardImage(),
@@ -81,8 +83,8 @@ class NewsCardItem extends StatelessWidget {
                   width: iconWidthHeight,
                   height: iconWidthHeight,
                   iconSize: iconSize,
-                  isAdded: item.isAddedBookmark,
-                  newsBookmarkDBItem:_getNewsBookmarkDBItem(item.articlesFromServer),
+                  name: dbItem.name,
+                  newsBookmarkDBItem:dbItem,
                 ),
                 Padding(
                   padding: EdgeInsets.only(left: 20, right: 8),

@@ -4,37 +4,40 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_news_app/database/news_database.dart';
 
+import 'bookmark_inheritedwidget.dart';
 import 'data/NewsUIItem.dart';
 
 
 
 class NewsBookmarkIcon extends StatefulWidget{
-  bool isAdded = false;
+
+  String name;
   double width;
   double height;
   double iconSize;
   NewsBookmarkDBItem newsBookmarkDBItem;
-  NewsBookmarkIcon({this.width,this.height,this.iconSize,this.isAdded,this.newsBookmarkDBItem});
+  NewsBookmarkIcon({this.width,this.height,this.iconSize,this.name,this.newsBookmarkDBItem});
 
   @override
   State<StatefulWidget> createState() {
-    return _NewsBookmarkIconState(width:width,height:height,isAdded:isAdded,iconSize:iconSize);
+    return _NewsBookmarkIconState(width:width,height:height,name:name,iconSize:iconSize,newsBookmarkDBItem: newsBookmarkDBItem);
   }
 
 }
 
 class _NewsBookmarkIconState extends State<NewsBookmarkIcon>{
-  bool isAdded = false;
+  String name;
   double width;
   double height;
   double iconSize;
   NewsBookmarkDBItem newsBookmarkDBItem;
-  _NewsBookmarkIconState({this.width,this.height,this.iconSize,this.isAdded,this.newsBookmarkDBItem});
+  _NewsBookmarkIconState({this.width,this.height,this.iconSize,this.name,this.newsBookmarkDBItem});
 
   void _addBookmark(){
     NewsDatabase.insertNews(newsBookmarkDBItem);
     setState(() {
-      isAdded = true;
+      BookmarkInheritedWidget.of(context).updateBookmark(name, true);
+
     });
 
   }
@@ -42,11 +45,13 @@ class _NewsBookmarkIconState extends State<NewsBookmarkIcon>{
   void _deleteBookmark(){
     NewsDatabase.deleteNews(newsBookmarkDBItem.name);
     setState(() {
-      isAdded = false;
+      BookmarkInheritedWidget.of(context).updateBookmark(name, false);
     });
   }
   @override
   Widget build(BuildContext context) {
+    var bookmarkInheritedWidget = BookmarkInheritedWidget.of(context);
+    bool isAdded = bookmarkInheritedWidget!=null && bookmarkInheritedWidget.isAddedBookmark(name);
     return  SizedBox(
         width: width,height: height,
         child:IconButton(

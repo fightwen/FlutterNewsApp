@@ -8,6 +8,7 @@ import 'package:flutter_news_app/database/news_database.dart';
 import 'package:flutter_news_app/home/data/tab_page_generater.dart';
 import 'package:flutter_news_app/news/data/NewsItem.dart';
 import 'package:flutter_news_app/news/data/NewsUIItem.dart';
+import 'package:flutter_news_app/tool/md5_tool.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
@@ -32,12 +33,13 @@ class Webservice {
     List<NewsArticleUIItem> list = List<NewsArticleUIItem>();
     var result = await getNewsItemList(context,qkey);
     var dbNewsNameList = await NewsDatabase.newsNames();
+
     result.articles.forEach((element) {
 
       list.add(NewsArticleUIItem(title:element.title == null ?"":element.title,
           url:element.url,
           urlToImage:element.urlToImage,
-          isAddedBookmark:dbNewsNameList.contains(element.source.name),
+          isAddedBookmark:dbNewsNameList.contains(generateMd5(element.title)),
           articlesFromServer:element));
     });
 

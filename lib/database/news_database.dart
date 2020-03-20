@@ -43,6 +43,8 @@ class NewsDatabase{
       newsBookmarkItem.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
+
+    print("db insert GGGG "+newsBookmarkItem.name);
   }
 
   static Future<List<NewsBookmarkDBItem>> news() async {

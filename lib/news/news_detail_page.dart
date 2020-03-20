@@ -35,7 +35,6 @@ class _NewsDetailPageRouteState extends State<NewsDetailPageRoute> {
 
   Widget _buildFullSecondPage(BuildContext context) {
     double iconWidthHeightSize = 30;
-    bool isAdded = false;
     return Scaffold(
         appBar: AppBar(
           title: Text(title),
@@ -55,7 +54,7 @@ class _NewsDetailPageRouteState extends State<NewsDetailPageRoute> {
                     width: iconWidthHeightSize,
                     height: iconWidthHeightSize,
                     iconSize: iconWidthHeightSize,
-                    isAdded: isAdded,
+                    name: newsBookmarkDBItem.name,
                     newsBookmarkDBItem: newsBookmarkDBItem)),
           ],
         ),
