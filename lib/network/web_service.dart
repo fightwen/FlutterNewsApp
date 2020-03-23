@@ -13,7 +13,7 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
 class Webservice {
-  bool isLocalTest = false;
+  bool isLocalTest = true;
   Client client = Client();
 
   Future<NewsItem> fetchNews(String qkey) async {

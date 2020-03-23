@@ -9,11 +9,25 @@ import 'news_bookmark_icon.dart';
 import 'news_detail_page.dart';
 import 'news_share_icon.dart';
 
-class NewsCardItem extends StatelessWidget {
+class NewsCardItem extends StatefulWidget {
+  NewsArticleUIItem item;
+  NewsCardItem(this.item);
+
+
+  @override
+  State<StatefulWidget> createState() {
+    return NewsCardItemState(item);
+  }
+}
+
+class NewsCardItemState extends State<NewsCardItem>{
   NewsArticleUIItem item;
   double radius = 8.0;
+  bool isAdded =false;
 
-  NewsCardItem({this.item});
+  NewsCardItemState(this.item);
+
+
 
   String getImageUrl(String urlToImage) {
     String imgUrl = urlToImage == null
@@ -67,63 +81,88 @@ class NewsCardItem extends StatelessWidget {
         content: articles.content);
   }
 
-  Widget _buildCardItems() {
-    double iconWidthHeight = 24;
-    double iconSize = 22;
-    NewsBookmarkDBItem dbItem = _getNewsBookmarkDBItem(item.articlesFromServer);
+  Widget _buildCardItems(BuildContext context,bool isAdded,NewsBookmarkDBItem dbItem) {
+
     return Column(
       children: <Widget>[
         _buildCardImage(),
-        Padding(
-            padding: EdgeInsets.all(16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                NewsBookmarkIcon(
-                  width: iconWidthHeight,
-                  height: iconWidthHeight,
-                  iconSize: iconSize,
-                  name: dbItem.name,
-                  newsBookmarkDBItem:dbItem,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 20, right: 8),
-                  child: NewsShareIcon(
-                      width: iconWidthHeight,
-                      height: iconWidthHeight,
-                      iconSize: iconSize,
-                      title: item.title,
-                      initialUrl: item.url),
-                )
-              ],
-            ))
+        _buildCardToolbar(isAdded,dbItem)
       ],
     );
   }
 
-  void onPressedCard(BuildContext context) {
+  Widget _buildCardToolbar(bool isAdded,NewsBookmarkDBItem newsBookmarkDBItem){
+    double iconWidthHeight = 24;
+    double iconSize = 22;
+
+    return Padding(
+        padding: EdgeInsets.all(16),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            NewsBookmarkIcon(
+                width: iconWidthHeight,
+                height: iconWidthHeight,
+                iconSize: iconSize,
+                isAddedBookmark: isAdded,
+                newsBookmarkDBItem:newsBookmarkDBItem,clickBookmarkCallBack: (isAdded){
+                   this.isAdded = isAdded;
+                   BookmarkInheritedWidget.of(context).updateBookmark(newsBookmarkDBItem.name, isAdded);
+                },
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 20, right: 8),
+              child: NewsShareIcon(
+                  width: iconWidthHeight,
+                  height: iconWidthHeight,
+                  iconSize: iconSize,
+                  title: item.title,
+                  initialUrl: item.url),
+            )
+          ],
+        )
+    );
+  }
+
+
+
+  void onPressedCard(BuildContext context,String name) async{
     String url = item.url == null ? "" : item.url;
     String title = item.title == null ? "" : item.title;
-    Navigator.push(
+
+    final result = await Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => NewsDetailPageRoute(
-                  initialUrl: url,
-                  title: title,
-                  newsBookmarkDBItem:_getNewsBookmarkDBItem(item.articlesFromServer)
-                )));
+                initialUrl: url,
+                title: title,
+                isAddedBookmark:isAdded,
+                newsBookmarkDBItem:_getNewsBookmarkDBItem(item.articlesFromServer),
+            )));
+
+    setState(() {
+      this.isAdded = result;
+      BookmarkInheritedWidget.of(context).updateBookmark(name, isAdded);
+    });
+
   }
+
 
   @override
   Widget build(BuildContext context) {
+    NewsBookmarkDBItem dbItem = _getNewsBookmarkDBItem(item.articlesFromServer);
+    isAdded = BookmarkInheritedWidget.of(context).isAddedBookmark(dbItem.name);
+
     return GestureDetector(
-        onTap: () => onPressedCard(context),
+        onTap: () => onPressedCard(context,dbItem.name),
         child: Card(
           margin: EdgeInsets.all(8.0),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(radius),
           ),
-          child: _buildCardItems(),
+          child: _buildCardItems(context,isAdded,dbItem),
         ));
   }
+
 }
+

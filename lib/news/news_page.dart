@@ -55,7 +55,7 @@ class _NewsPageListViewState extends State<NewsPageListView>{
 
   Widget getRow(NewsArticleUIItem item) {
     if(item!=null){
-      return NewsCardItem(item:item);
+      return NewsCardItem(item);
     }
     return Container();
   }
@@ -69,10 +69,6 @@ class _NewsPageListViewState extends State<NewsPageListView>{
           child: FutureBuilder<List<NewsArticleUIItem>>(
               future:service.getNewsArticleUIItemList(context,qkey),
               builder: (context, snapshot) {
-                print("data!!!!"+(snapshot.data!=null).toString());
-                if(snapshot.data!=null){
-                  print("data length !!!!"+(snapshot.data.length).toString());
-                }
 
                 if (snapshot.hasError) return NetworkErrorWidget();
                 return snapshot.hasData && snapshot.data!=null && snapshot.data.length !=0

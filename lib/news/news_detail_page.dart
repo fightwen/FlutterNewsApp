@@ -10,23 +10,36 @@ class NewsDetailPageRoute extends StatefulWidget {
   String initialUrl;
   String title;
   NewsBookmarkDBItem newsBookmarkDBItem;
+  bool isAddedBookmark = false;
 
-  NewsDetailPageRoute({this.initialUrl, this.title,this.newsBookmarkDBItem});
+  NewsDetailPageRoute(
+      {this.initialUrl,
+      this.title,
+      this.isAddedBookmark,
+      this.newsBookmarkDBItem});
 
   @override
   State<StatefulWidget> createState() {
-    return _NewsDetailPageRouteState(initialUrl: initialUrl, title: title,newsBookmarkDBItem: newsBookmarkDBItem);
+    return _NewsDetailPageRouteState(
+        initialUrl: initialUrl,
+        title: title,
+        isAddedBookmark: isAddedBookmark,
+        newsBookmarkDBItem: newsBookmarkDBItem);
   }
 }
 
 class _NewsDetailPageRouteState extends State<NewsDetailPageRoute> {
   String initialUrl;
   String title;
-  bool isLoaded = false;
   bool _isLoadingPage = true;
+  bool isAddedBookmark = false;
   NewsBookmarkDBItem newsBookmarkDBItem;
 
-  _NewsDetailPageRouteState({this.initialUrl, this.title,this.newsBookmarkDBItem});
+  _NewsDetailPageRouteState(
+      {this.initialUrl,
+      this.title,
+      this.isAddedBookmark,
+      this.newsBookmarkDBItem});
 
   @override
   Widget build(BuildContext context) {
@@ -35,30 +48,41 @@ class _NewsDetailPageRouteState extends State<NewsDetailPageRoute> {
 
   Widget _buildFullSecondPage(BuildContext context) {
     double iconWidthHeightSize = 30;
-    return Scaffold(
-        appBar: AppBar(
-          title: Text(title),
-          actions: [
-            Padding(
-              padding: EdgeInsets.only(right: 16),
-              child: NewsShareIcon(
-                  width: iconWidthHeightSize,
-                  height: iconWidthHeightSize,
-                  iconSize: iconWidthHeightSize,
-                  title: title,
-                  initialUrl: initialUrl),
-            ),
-            Padding(
-                padding: EdgeInsets.only(right: 18),
-                child: NewsBookmarkIcon(
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pop(context, isAddedBookmark);
+        return false;
+      },
+      child: Scaffold(
+          appBar: AppBar(
+            title: Text(title),
+            actions: [
+              Padding(
+                padding: EdgeInsets.only(right: 16),
+                child: NewsShareIcon(
                     width: iconWidthHeightSize,
                     height: iconWidthHeightSize,
                     iconSize: iconWidthHeightSize,
-                    name: newsBookmarkDBItem.name,
-                    newsBookmarkDBItem: newsBookmarkDBItem)),
-          ],
-        ),
-        body: _isLoadingPage ? _buildLoadingWebview() : _buildLoadedWebview());
+                    title: title,
+                    initialUrl: initialUrl),
+              ),
+              Padding(
+                  padding: EdgeInsets.only(right: 18),
+                  child: NewsBookmarkIcon(
+                    width: iconWidthHeightSize,
+                    height: iconWidthHeightSize,
+                    iconSize: iconWidthHeightSize,
+                    isAddedBookmark: isAddedBookmark,
+                    newsBookmarkDBItem: newsBookmarkDBItem,
+                    clickBookmarkCallBack: (isAdded) {
+                      isAddedBookmark = isAdded;
+                    },
+                  )),
+            ],
+          ),
+          body:
+              _isLoadingPage ? _buildLoadingWebview() : _buildLoadedWebview()),
+    );
   }
 
   Widget _buildLoadingWebview() {
