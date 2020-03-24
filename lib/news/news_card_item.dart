@@ -42,10 +42,7 @@ class NewsCardItemState extends State<NewsCardItem>{
       children: <Widget>[
         ClipRRect(
           borderRadius: BorderRadius.circular(radius),
-          child: FadeInImage.memoryNetwork(
-            placeholder: kTransparentImage,
-            image: getImageUrl(item.urlToImage),
-          ),
+          child: Image.network(getImageUrl(item.urlToImage)),
         ),
         Container(
             width: double.infinity,
@@ -106,8 +103,7 @@ class NewsCardItemState extends State<NewsCardItem>{
                 iconSize: iconSize,
                 isAddedBookmark: isAdded,
                 newsBookmarkDBItem:newsBookmarkDBItem,clickBookmarkCallBack: (isAdded){
-                   this.isAdded = isAdded;
-                   BookmarkInheritedWidget.of(context).updateBookmark(newsBookmarkDBItem.name, isAdded);
+                   updateBookmarkAndSetupFlag(context,isAdded,newsBookmarkDBItem.name);
                 },
             ),
             Padding(
@@ -141,10 +137,14 @@ class NewsCardItemState extends State<NewsCardItem>{
             )));
 
     setState(() {
-      this.isAdded = result;
-      BookmarkInheritedWidget.of(context).updateBookmark(name, isAdded);
+      updateBookmarkAndSetupFlag(context,result,name);
     });
 
+  }
+  
+  void updateBookmarkAndSetupFlag(BuildContext context,bool result,String name){
+    this.isAdded = result;
+    BookmarkInheritedWidget.of(context).updateBookmark(name, isAdded);
   }
 
 
