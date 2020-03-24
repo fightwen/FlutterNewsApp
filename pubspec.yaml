@@ -30,6 +30,7 @@ dependencies:
   http: ^0.12.0+4
   sqflite:
   path:
+  intl: ^0.15.8
 
 dev_dependencies:
   flutter_test:
@@ -57,6 +58,7 @@ flutter:
     - assets/texts/newItemsSports.json
     - assets/texts/newItemsTechnology.json
     - assets/images/no_connection.png
+    - assets/images/delete.png
 
 
   # To add assets to your application, add an assets section, like this:

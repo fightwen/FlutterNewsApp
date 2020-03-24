@@ -1,5 +1,5 @@
 
-import 'NewsItem.dart';
+import 'news_item.dart';
 
 class NewsArticleUIItem{
   NewsArticleUIItem({this.title,this.url,this.urlToImage,this.isAddedBookmark,this.articlesFromServer});

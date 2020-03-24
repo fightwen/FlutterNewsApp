@@ -36,15 +36,15 @@ class NewsDatabase{
     final Database db = await database;
 
     // Insert the NewsBookmarkItem into the correct table. Also specify the
-    // `conflictAlgorithm`. In this case, if the same dog is inserted
+    // `conflictAlgorithm`. In this case, if the same NewsBookmarkDBItem is inserted
     // multiple times, it replaces the previous data.
     await db.insert(
       TABLE_NAME,
       newsBookmarkItem.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
+    print("insertNews title "+newsBookmarkItem.title);
 
-    print("db insert GGGG "+newsBookmarkItem.name);
   }
 
   static Future<List<NewsBookmarkDBItem>> news() async {
@@ -59,7 +59,7 @@ class NewsDatabase{
     if(db == null)
       return null;
 
-    // Query the table for all The Dogs.
+    // Query the table for all The NewsBookmarkDBItems.
     final List<Map<String, dynamic>> maps = await db.query(TABLE_NAME);
 
     if(maps == null)
@@ -92,7 +92,7 @@ class NewsDatabase{
     if(db == null)
       return null;
 
-    // Query the table for all The Dogs.
+    // Query the table for all The NewsBookmarkDBItems.
     final List<Map<String, dynamic>> maps = await db.query(TABLE_NAME);
 
     if(maps == null)
@@ -112,13 +112,13 @@ class NewsDatabase{
     // Get a reference to the database.
     final db = await database;
 
-    // Update the given Dog.
+    // Update the given NewsBookmarkDBItem.
     await db.update(
       TABLE_NAME,
       newsBookmarkItem.toMap(),
-      // Ensure that the Dog has a matching id.
+      // Ensure that the NewsBookmarkDBItem has a matching name.
       where: "name = ?",
-      // Pass the Dog's id as a whereArg to prevent SQL injection.
+      // Pass the NewsBookmarkDBItem's id as a whereArg to prevent SQL injection.
       whereArgs: [newsBookmarkItem.name],
     );
   }
@@ -131,12 +131,12 @@ class NewsDatabase{
     // Get a reference to the database.
     final db = await database;
 
-    // Remove the Dog from the database.
+    // Remove the NewsBookmarkDBItem from the database.
     await db.delete(
       TABLE_NAME,
-      // Use a `where` clause to delete a specific dog.
+      // Use a `where` clause to delete a specific NewsBookmarkDBItem.
       where: "name = ?",
-      // Pass the Dog's id as a whereArg to prevent SQL injection.
+      // Pass the NewsBookmarkDBItem's id as a whereArg to prevent SQL injection.
       whereArgs: [name],
     );
   }
@@ -180,7 +180,7 @@ class NewsBookmarkDBItem {
   }
 
   // Implement toString to make it easier to see information about
-  // each dog when using the print statement.
+  // each NewsBookmarkDBItem when using the print statement.
   @override
   String toString() {
     return 'NewsBookmarkItem{ name: $name, title: $title, urlToImage: $urlToImage, savedAt: $savedAt, url: $url, publishedAt: $publishedAt,description: $description, content: $content, author: $author}';

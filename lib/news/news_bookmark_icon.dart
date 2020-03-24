@@ -4,8 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_news_app/database/news_database.dart';
 
-import 'bookmark_inheritedwidget.dart';
-import 'data/NewsUIItem.dart';
+import 'news_bookmark_inheritedwidget.dart';
+import 'data/news_ui_item.dart';
 
 
 
@@ -34,8 +34,26 @@ class NewsBookmarkIcon extends StatefulWidget{
 
 class _NewsBookmarkIconState extends State<NewsBookmarkIcon>{
 
+  NewsBookmarkDBItem _getSavedDBItem(NewsBookmarkDBItem dbItem){
+    NewsBookmarkDBItem savedDBItem = NewsBookmarkDBItem(
+        name:dbItem.name,
+        title:dbItem.title,
+        urlToImage:dbItem.urlToImage,
+        url: dbItem.url,
+        savedAt: DateTime.now().millisecondsSinceEpoch,
+        publishedAt: dbItem.publishedAt,
+        description: dbItem.description,
+        author: dbItem.author,
+        content: dbItem.content
+    );
+    return savedDBItem;
+  }
+
   void _addBookmark(){
-    NewsDatabase.insertNews(widget.newsBookmarkDBItem);
+    NewsBookmarkDBItem dbItem = widget.newsBookmarkDBItem;
+    NewsBookmarkDBItem savedDBItem = _getSavedDBItem(dbItem);
+
+    NewsDatabase.insertNews(savedDBItem);
     setState(() {
       widget.isAddedBookmark = true;
       if(widget.clickBookmarkCallBack!=null){
