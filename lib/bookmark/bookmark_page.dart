@@ -16,6 +16,15 @@ class BookmarkPage extends StatefulWidget {
 class _BookmarkPageState extends State<BookmarkPage> {
   BookmarkController controller = BookmarkController();
 
+  Widget _buildEmptyView(){
+    return Center(child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+      Icon(Icons.note_add,size:150,color: Colors.grey[400],),
+      Text("Empty list",style: TextStyle(fontSize: 18),)
+    ],) );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +37,7 @@ class _BookmarkPageState extends State<BookmarkPage> {
                         snapshot.data != null &&
                         snapshot.data.length != 0
                     ? getListView(snapshot.data.length, snapshot.data)
-                    : Center(child: CircularProgressIndicator());
+                    : _buildEmptyView();
               })),
       floatingActionButton: FloatingActionButton(
         tooltip: 'Increment',
