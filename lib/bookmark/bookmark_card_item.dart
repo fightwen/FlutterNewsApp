@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_news_app/news/news_detail_page.dart';
 import 'package:flutter_news_app/news/news_share_icon.dart';
 import 'package:flutter_news_app/views/line_widget.dart';
+import 'package:path/path.dart';
 
-import 'bookmark_inheritedwidget.dart';
+import '../database/news_database.dart';
 import 'data/bookmark_ui_item.dart';
 
 class BookmarkCardItem extends StatelessWidget {
@@ -23,9 +24,9 @@ class BookmarkCardItem extends StatelessWidget {
     );
   }
 
-  void onPressDelete() {}
 
-  Widget _buildRowIconsInItem() {
+
+  Widget _buildRowIconsInItem(BuildContext context) {
     double timeFontSize = 14;
     double size = 20;
     return Row(
@@ -40,7 +41,9 @@ class BookmarkCardItem extends StatelessWidget {
             margin: EdgeInsets.symmetric(horizontal: 10.0),
             child: IconButton(
               iconSize: size,
-              onPressed: onPressDelete,
+              onPressed: (){
+                _neverSatisfied(context,uiItem.name);
+              },
               icon: Image(
                 width: size,
                 height: size,
@@ -61,6 +64,41 @@ class BookmarkCardItem extends StatelessWidget {
     );
   }
 
+  Future<void> _neverSatisfied(BuildContext context,String name) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Remove Article'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Are you sure you want to '),
+                Text('remove this article?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),FlatButton(
+              child: Text('Remove'),
+              onPressed: () {
+                NewsDatabase.deleteNews(name);
+                callBackUpdateList();
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        );
+      },
+    );
+  }
+
   void onPressedCard(BuildContext context, BookmarkUIItem uiItem) async {
     var result =  await Navigator.push(
         context, MaterialPageRoute(builder: (context) =>
@@ -75,7 +113,7 @@ class BookmarkCardItem extends StatelessWidget {
     }
   }
 
-  Widget _buildTexts() {
+  Widget _buildTexts(BuildContext context) {
     double titleFontSize = 18;
     return Expanded(
       child: Padding(
@@ -83,26 +121,26 @@ class BookmarkCardItem extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Text(uiItem.title, style: TextStyle(fontSize: titleFontSize)),
-            _buildRowIconsInItem()
+            _buildRowIconsInItem(context)
           ],
         ),
       ),
     );
   }
 
-  Widget _buildCardImageAndText() {
+  Widget _buildCardImageAndText(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.max,
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[_buildImage(), _buildTexts()],
+      children: <Widget>[_buildImage(), _buildTexts(context)],
     );
   }
 
   @override
   Widget build(BuildContext context) {
     double padding = 16;
-    return GestureDetector(
+    return InkWell(
         onTap: () => onPressedCard(context,uiItem),
         child: Column(
           mainAxisSize: MainAxisSize.max,
@@ -110,7 +148,7 @@ class BookmarkCardItem extends StatelessWidget {
           children: <Widget>[
             Padding(
               padding: EdgeInsets.only(top: padding,left: padding,right:padding),
-              child: _buildCardImageAndText(),
+              child: _buildCardImageAndText(context),
             ),
             LineWidget(Colors.grey[300])
           ],

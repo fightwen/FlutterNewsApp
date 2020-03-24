@@ -59,6 +59,7 @@ flutter:
     - assets/texts/newItemsTechnology.json
     - assets/images/no_connection.png
     - assets/images/delete.png
+    - assets/images/trash_icon.png
 
 
   # To add assets to your application, add an assets section, like this:
