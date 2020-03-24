@@ -45,15 +45,15 @@ class _BookmarkPageState extends State<BookmarkPage> {
           itemBuilder: (context) => [
             PopupMenuItem(
               value: 1,
-              child: Text("First"),
+              child: Text("Clear All"),
             ),
             PopupMenuItem(
               value: 2,
-              child: Text("Second"),
+              child: Text("Older than 1 week"),
             ),
             PopupMenuItem(
               value: 3,
-              child: Text("Third"),
+              child: Text("Older than 1 month"),
             ),
           ],
           offset: Offset(80, -180),
