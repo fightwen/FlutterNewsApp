@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_news_app/network/web_service.dart';
 import 'package:flutter_news_app/style/app_colors.dart';
 import 'package:flutter_news_app/views/network_error_widget.dart';
+import 'bookmark_inheritedwidget.dart';
 import 'data/NewsItem.dart';
+import 'data/NewsUIItem.dart';
 import 'news_card_item.dart';
 
 
@@ -12,7 +14,6 @@ class NewsPage extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    print("gggg NewsPageListView "+qkey);
     return Container(
         color:AppColors.backgroundColor,
         child:NewsPageListView(qkey: qkey)
@@ -46,14 +47,17 @@ class _NewsPageListViewState extends State<NewsPageListView>{
     });
   }
 
-  ListView getListView(List<Articles> list) => ListView.builder(
-      itemCount: list.length,
+  ListView getListView(BuildContext context,int size) => ListView.builder(
+      itemCount: size,
       itemBuilder: (BuildContext context, int position) {
-        return getRow(list[position]);
+        return getRow(BookmarkInheritedWidget.of(context).getItem(position));
       });
 
-  Widget getRow(Articles item) {
-    return NewsCardItem(item);
+  Widget getRow(NewsArticleUIItem item) {
+    if(item!=null){
+      return NewsCardItem(item);
+    }
+    return Container();
   }
 
   @override
@@ -62,12 +66,13 @@ class _NewsPageListViewState extends State<NewsPageListView>{
     return RefreshIndicator(
         onRefresh: _onRefreshList,
         child:Center(
-          child: FutureBuilder<NewsItem>(
-              future:service.getNewsItemList(context,qkey),
+          child: FutureBuilder<List<NewsArticleUIItem>>(
+              future:service.getNewsArticleUIItemList(context,qkey),
               builder: (context, snapshot) {
+
                 if (snapshot.hasError) return NetworkErrorWidget();
-                return snapshot.hasData
-                    ? getListView(snapshot.data.articles)
+                return snapshot.hasData && snapshot.data!=null && snapshot.data.length !=0
+                    ? BookmarkInheritedWidget(list:snapshot.data, child:getListView(context,snapshot.data.length))
                     : Center(child: CircularProgressIndicator());
               }
           ),
