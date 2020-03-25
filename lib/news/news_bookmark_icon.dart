@@ -35,12 +35,14 @@ class NewsBookmarkIcon extends StatefulWidget{
 class _NewsBookmarkIconState extends State<NewsBookmarkIcon>{
 
   NewsBookmarkDBItem _getSavedDBItem(NewsBookmarkDBItem dbItem){
+    DateTime currentDateTime = DateTime.now();
+    int savedAt = currentDateTime.millisecondsSinceEpoch;
     NewsBookmarkDBItem savedDBItem = NewsBookmarkDBItem(
         name:dbItem.name,
         title:dbItem.title,
         urlToImage:dbItem.urlToImage,
         url: dbItem.url,
-        savedAt: DateTime.now().millisecondsSinceEpoch,
+        savedAt: savedAt,
         publishedAt: dbItem.publishedAt,
         description: dbItem.description,
         author: dbItem.author,

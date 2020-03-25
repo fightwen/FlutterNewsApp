@@ -33,6 +33,10 @@ class _BookmarkPageState extends State<BookmarkPage> {
               future: controller.fetchBookmarkList(),
               builder: (context, snapshot) {
                 if (snapshot.hasError) return NetworkErrorWidget();
+                if(snapshot.connectionState == ConnectionState.waiting){
+                  return Center(child: CircularProgressIndicator(),);
+                }
+
                 return snapshot.hasData &&
                         snapshot.data != null &&
                         snapshot.data.length != 0
@@ -40,44 +44,71 @@ class _BookmarkPageState extends State<BookmarkPage> {
                     : _buildEmptyView();
               })),
       floatingActionButton: FloatingActionButton(
-        tooltip: 'Increment',
-        child: PopupMenuButton(
-          itemBuilder: (context) => [
-            PopupMenuItem(
-              value: 1,
-              child: Text("Clear All"),
-            ),
-            PopupMenuItem(
-              value: 2,
-              child: Text("Older than 1 week"),
-            ),
-            PopupMenuItem(
-              value: 3,
-              child: Text("Older than 1 month"),
-            ),
-          ],
-          offset: Offset(80, -180),
-          icon: Image(
-          width: 20,
-          height: 20,
-          image:  AssetImage('assets/images/trash_icon.png') ,),
-        ),
+        onPressed: (){},
+        child: _buildPopMenuButton(),
       ),
     );
   }
 
-  Widget _simplePopup() => PopupMenuButton<int>(
-    itemBuilder: (context) => [
-      PopupMenuItem(
-        value: 1,
-        child: Text("First"),
-      ),
-      PopupMenuItem(
-        value: 2,
-        child: Text("Second"),
-      ),
-    ],
-  );
+  void clearOlderThanOneWeekAndUpdateList() async{
+    var result = await controller.clearOlderThanOneWeek();
+    if(result){
+      setState(() {});
+    }
+  }
+
+  void clearOlderThanMonthAndUpdateList() async{
+    var result = await controller.clearOlderThanMonth();
+    if(result){
+      setState(() {});
+    }
+  }
+
+  void clearAllAndUpdateList() {
+    var result = controller.clearAllBookmarkList();
+    result.whenComplete(() => {
+      setState(() {})
+    });
+  }
+
+  Widget _buildPopMenuButton() {
+    return PopupMenuButton(
+      onSelected: (value){
+        switch (value){
+          case 1:
+            clearAllAndUpdateList();
+            break;
+          case 2:
+            clearOlderThanOneWeekAndUpdateList();
+            break;
+          case 3:
+            clearOlderThanMonthAndUpdateList();
+            break;
+
+        }
+
+      },
+      itemBuilder: (context) => [
+        PopupMenuItem(
+          value: 1,
+          child: Text("Clear All"),
+        ),
+        PopupMenuItem(
+          value: 2,
+          child: Text("Older than 1 week"),
+        ),
+        PopupMenuItem(
+          value: 3,
+          child: Text("Older than 1 month"),
+        ),
+      ],
+      offset: Offset(80, -180),
+      icon: Image(
+        width: 20,
+        height: 20,
+        image:  AssetImage('assets/images/trash_icon.png') ,),
+    );
+  }
 
   ListView getListView(int length, List<BookmarkUIItem> list) {
     return ListView.builder(

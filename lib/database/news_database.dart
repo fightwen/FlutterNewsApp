@@ -141,6 +141,26 @@ class NewsDatabase{
     );
   }
 
+  static Future<bool> deleteAll() async {
+    if(database == null){
+      init();
+    }
+
+    try{
+      final db = await database;
+      await db.transaction((txn) async {
+        var batch = txn.batch();
+        batch.delete(TABLE_NAME);
+        await batch.commit();
+      });
+      return true;
+    } catch(error){
+      throw Exception('DbBase.cleanDatabase: ' + error.toString());
+      return false;
+    }
+    return false;
+  }
+
 }
 
 class NewsBookmarkDBItem {
