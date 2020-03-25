@@ -63,6 +63,10 @@ class BookmarkController{
 
   bool checkOlderThanOneWeekBookmark(int saveTime){
     DateTime currentDateTime = DateTime.now();
+    return checkOlderThanOneWeekBookmark2(saveTime,currentDateTime);
+  }
+
+  bool checkOlderThanOneWeekBookmark2(int saveTime,DateTime currentDateTime){
     int currentMonth = currentDateTime.month;
     int currentYear = currentDateTime.year;
     int currentDay = currentDateTime.day;
@@ -88,6 +92,10 @@ class BookmarkController{
 
   bool checkOlderThanMonthBookmark(int saveTime){
     DateTime currentDateTime = DateTime.now();
+    return checkOlderThanMonthBookmark2(saveTime,currentDateTime);
+  }
+
+  bool checkOlderThanMonthBookmark2(int saveTime,DateTime currentDateTime){
     int currentMonth = currentDateTime.month;
     int currentYear = currentDateTime.year;
     DateTime savedDateTime = DateTime.fromMillisecondsSinceEpoch(saveTime);
