@@ -1,19 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_news_app/tool/md5_tool.dart';
 
-import 'data/NewsUIItem.dart';
+import 'data/news_ui_item.dart';
 
-class BookmarkInheritedWidget extends InheritedWidget {
+class NewsBookmarkInheritedWidget extends InheritedWidget {
   List<NewsArticleUIItem> list;
 
-  BookmarkInheritedWidget({@required this.list, @required Widget child}):super(child: child);
+  NewsBookmarkInheritedWidget({@required this.list, @required Widget child}):super(child: child);
 
   @override
-  bool updateShouldNotify(BookmarkInheritedWidget old) =>
+  bool updateShouldNotify(NewsBookmarkInheritedWidget old) =>
       list != old.list;
 
-  static BookmarkInheritedWidget of(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<BookmarkInheritedWidget>();
+  static NewsBookmarkInheritedWidget of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<NewsBookmarkInheritedWidget>();
   }
 
   int getListlength(){

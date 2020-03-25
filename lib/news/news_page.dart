@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_news_app/network/web_service.dart';
 import 'package:flutter_news_app/style/app_colors.dart';
 import 'package:flutter_news_app/views/network_error_widget.dart';
-import 'bookmark_inheritedwidget.dart';
-import 'data/NewsItem.dart';
-import 'data/NewsUIItem.dart';
+import 'news_bookmark_inheritedwidget.dart';
+import 'data/news_item.dart';
+import 'data/news_ui_item.dart';
 import 'news_card_item.dart';
 
 
@@ -50,7 +50,7 @@ class _NewsPageListViewState extends State<NewsPageListView>{
   ListView getListView(BuildContext context,int size) => ListView.builder(
       itemCount: size,
       itemBuilder: (BuildContext context, int position) {
-        return getRow(BookmarkInheritedWidget.of(context).getItem(position));
+        return getRow(NewsBookmarkInheritedWidget.of(context).getItem(position));
       });
 
   Widget getRow(NewsArticleUIItem item) {
@@ -72,7 +72,7 @@ class _NewsPageListViewState extends State<NewsPageListView>{
 
                 if (snapshot.hasError) return NetworkErrorWidget();
                 return snapshot.hasData && snapshot.data!=null && snapshot.data.length !=0
-                    ? BookmarkInheritedWidget(list:snapshot.data, child:getListView(context,snapshot.data.length))
+                    ? NewsBookmarkInheritedWidget(list:snapshot.data, child:getListView(context,snapshot.data.length))
                     : Center(child: CircularProgressIndicator());
               }
           ),

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_news_app/database/news_database.dart';
 import 'package:flutter_news_app/tool/md5_tool.dart';
 import 'package:transparent_image/transparent_image.dart';
-import 'bookmark_inheritedwidget.dart';
-import 'data/NewsItem.dart';
-import 'data/NewsUIItem.dart';
+import 'news_bookmark_inheritedwidget.dart';
+import 'data/news_item.dart';
+import 'data/news_ui_item.dart';
 import 'news_bookmark_icon.dart';
 import 'news_detail_page.dart';
 import 'news_share_icon.dart';
@@ -69,6 +69,7 @@ class NewsCardItemState extends State<NewsCardItem>{
   NewsBookmarkDBItem _getNewsBookmarkDBItem(Articles articles){
     return NewsBookmarkDBItem(
         name: generateMd5(articles.title == null?"":articles.title),
+        title: articles.title == null?"": articles.title,
         author: articles.author,
         publishedAt: articles.publishedAt,
         url: articles.url,
@@ -144,14 +145,14 @@ class NewsCardItemState extends State<NewsCardItem>{
   
   void updateBookmarkAndSetupFlag(BuildContext context,bool result,String name){
     this.isAdded = result;
-    BookmarkInheritedWidget.of(context).updateBookmark(name, isAdded);
+    NewsBookmarkInheritedWidget.of(context).updateBookmark(name, isAdded);
   }
 
 
   @override
   Widget build(BuildContext context) {
     NewsBookmarkDBItem dbItem = _getNewsBookmarkDBItem(item.articlesFromServer);
-    isAdded = BookmarkInheritedWidget.of(context).isAddedBookmark(dbItem.name);
+    isAdded = NewsBookmarkInheritedWidget.of(context).isAddedBookmark(dbItem.name);
 
     return GestureDetector(
         onTap: () => onPressedCard(context,dbItem.name),
