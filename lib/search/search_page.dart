@@ -86,8 +86,8 @@ class _SearchPageState extends State<SearchPage> {
 
   Widget _generateSearchListPage(bool isSearched){
     if(isSearched)
-      return Expanded(child: RecentSearchPage(),);
-    return Expanded(child:SearchResultPage());
+      return Expanded(child:SearchResultPage());
+    return Expanded(child: RecentSearchPage(),);
   }
 
   @override
