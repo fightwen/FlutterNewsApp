@@ -57,12 +57,7 @@ class _RecentSearchPageState extends State<RecentSearchPage> {
       });
 
   Widget getRowWithTap(String keyword){
-    return InkWell(
-      onTap: (){
-        widget.searchCallBack(keyword);
-      },
-      child: getRow(keyword),
-    );
+    return getRow(keyword);
   }
 
 
@@ -71,17 +66,27 @@ class _RecentSearchPageState extends State<RecentSearchPage> {
     double keywordFontSize = 18;
     return Container(
         color: Colors.white,
-        child: Padding(
-          padding: EdgeInsets.only(
-              left: leftPadding, right: rightPadding, top: topBottomPadding, bottom: topBottomPadding),
-          child: Text(
-            keyword,
-            style: TextStyle(fontSize: keywordFontSize, color: Colors.black),
-            textAlign: TextAlign.justify,
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,)
-          ,)
-    );
+        child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+                onTap: () {
+                  widget.searchCallBack(keyword);
+                },
+                child: Padding(
+                  padding: EdgeInsets.only(
+                      left: leftPadding,
+                      right: rightPadding,
+                      top: topBottomPadding,
+                      bottom: topBottomPadding),
+                  child: Text(
+                    keyword,
+                    style: TextStyle(
+                        fontSize: keywordFontSize, color: Colors.black),
+                    textAlign: TextAlign.justify,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,)
+                  ,)
+            )));
   }
 
   Widget _buildRecentSearch() {

@@ -62,7 +62,7 @@ class _NewsPageListViewState extends State<NewsPageListView>{
 
   @override
   Widget build(BuildContext context) {
-    var service = Webservice();
+    var service = WebService();
     return RefreshIndicator(
         onRefresh: _onRefreshList,
         child:Center(

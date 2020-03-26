@@ -12,9 +12,46 @@ import 'package:flutter_news_app/tool/md5_tool.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
-class Webservice {
+class WebService {
   bool isLocalTest = true;
   Client client = Client();
+
+  // Parses newsItems.json File
+  Future<NewsItem> getSearchNewsItemList(BuildContext context,String qkey,String lang) async {
+//    if(isLocalTest){
+//      return getNewsItemListFile(context,qkey);
+//    }
+    return fetchSearchNews(qkey,lang);
+  }
+
+  Future<NewsItem> fetchSearchNews(String qkey,String lang) async {
+    String url = "https://gitlab.com/fightmz/testinfo/-/raw/master/search_"+qkey+"_"+lang+".json";
+
+    if(lang.isEmpty){
+      url = "https://gitlab.com/fightmz/testinfo/-/raw/master/search_"+qkey+".json";
+    }
+
+    if(qkey != "bitcoin"){
+      url = "https://gitlab.com/fightmz/testinfo/-/raw/master/search_empty.json";
+    }
+
+    final response = await client.get(url);
+    if(response.statusCode == 200) {
+
+      final body = jsonDecode(response.body);
+      return NewsItem.fromJson(body);
+    } else {
+      throw Exception("Unable to perform request!");
+    }
+  }
+
+  // Parses newsItems.json File
+  Future<NewsItem> getNewsItemList(BuildContext context,String qkey) async {
+    if(isLocalTest){
+      return getNewsItemListFile(context,qkey);
+    }
+    return fetchNews(qkey);
+  }
 
   Future<NewsItem> fetchNews(String qkey) async {
 
@@ -28,6 +65,7 @@ class Webservice {
       throw Exception("Unable to perform request!");
     }
   }
+
 
   Future<List<NewsArticleUIItem>> getNewsArticleUIItemList(BuildContext context,String qkey) async {
     List<NewsArticleUIItem> list = List<NewsArticleUIItem>();
@@ -46,13 +84,6 @@ class Webservice {
     return list;
   }
 
-  // Parses newsItems.json File
-  Future<NewsItem> getNewsItemList(BuildContext context,String qkey) async {
-    if(isLocalTest){
-      return getNewsItemListFile(context,qkey);
-    }
-    return fetchNews(qkey);
-  }
 
   // Parses newsItems.json File
   Future<NewsItem> getNewsItemListFile(BuildContext context,String qkey) async {

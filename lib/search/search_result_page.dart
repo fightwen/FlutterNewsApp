@@ -1,7 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_news_app/news/news_detail_page.dart';
 import 'package:flutter_news_app/style/app_paddings.dart';
 import 'package:flutter_news_app/views/line_widget.dart';
+import 'package:flutter_news_app/views/network_error_widget.dart';
+
+import 'controller/search_controller.dart';
+import 'data/search_ui_item.dart';
+
+const String ALL = "ALL";
+const String TW = "TW";
+const String US = "US";
+const String JP = "JP";
 
 class SearchResultPage extends StatefulWidget {
   String keyword;
@@ -14,6 +24,7 @@ class SearchResultPage extends StatefulWidget {
 }
 
 class _SearchResultPageState extends State<SearchResultPage> {
+  SearchController searchController= SearchController();
 
   Widget _buildResultText(String searchResultText) {
     return Padding(
@@ -54,21 +65,34 @@ class _SearchResultPageState extends State<SearchResultPage> {
         padding: EdgeInsets.only(
             top: AppPaddings.topBottomPadding,
             bottom: AppPaddings.topBottomPadding),
-        child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              _buildResultText("2234 results"),
-              _buildNavigationBar(),
-              Expanded(child: getListView(),)
-
-            ]));
+        child: FutureBuilder<List<SearchUIItem>>(
+            future: searchController.getSearchUIItemList(
+                context, widget.keyword, "zh"),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) return NetworkErrorWidget();
+              return snapshot.hasData && snapshot.data != null &&
+                  snapshot.data.length != 0
+                  ? _buildSearchedView(snapshot.data.length, snapshot.data)
+                  : Center(child: CircularProgressIndicator());
+            }
+        ));
   }
 
-  String ALL = "ALL";
-  String ARTICLES = "Articles";
-  String VIDEOS = "Videos";
-  String GALLERIES = "Galleries";
+  Widget _buildSearchedView(int length,List<SearchUIItem> searchUIItems) {
+    return Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          _buildResultText(length.toString() + " results"),
+          _buildNavigationBar(),
+          Expanded(
+              child: getListView(length, searchUIItems)
+
+          ),
+        ]);
+  }
+
+
 
   Widget _buildNavigateText(String text){
     double textPadding = 8;
@@ -80,32 +104,51 @@ class _SearchResultPageState extends State<SearchResultPage> {
   Map<String, Widget> getChilds() {
     Map<String, Widget> maps = Map<String, Widget>();
     maps.putIfAbsent(ALL, () => _buildNavigateText(ALL));
-    maps.putIfAbsent(ARTICLES, () => _buildNavigateText(ARTICLES));
-    maps.putIfAbsent(VIDEOS, () => _buildNavigateText(VIDEOS));
-    maps.putIfAbsent(GALLERIES, () => _buildNavigateText(GALLERIES));
+    maps.putIfAbsent(TW, () => _buildNavigateText(TW));
+    maps.putIfAbsent(US, () => _buildNavigateText(US));
+    maps.putIfAbsent(JP, () => _buildNavigateText(JP));
     return maps;
   }
 
-  ListView getListView() => ListView.builder(
-      itemCount: 3,
+  ListView getListView(int length,List<SearchUIItem> searchUIItems) => ListView.builder(
+      itemCount: length,
       itemBuilder: (BuildContext context, int position) {
-        return getRow(position);
+        return _buildRowWithTap(context,searchUIItems[position]);
       });
 
-  Widget _buidItemTitleText(){
+  void onPressedCard(BuildContext context, SearchUIItem uiItem) async {
+//    var result =  await Navigator.push(
+//        context, MaterialPageRoute(builder: (context) =>
+//        NewsDetailPageRoute(
+//            initialUrl: uiItem.url,
+//            title: uiItem.title,
+//            isAddedBookmark: uiItem.isAddedBookmark,
+//            newsBookmarkDBItem: uiItem.dbItem)));
+
+  }
+
+  Widget _buildRowWithTap(BuildContext context,SearchUIItem searchUIItem){
+    return InkWell(
+      onTap: (){
+        onPressedCard(context,searchUIItem);
+      },
+      child: getRow(searchUIItem) ,);
+  }
+
+  Widget _buidItemTitleText(String title){
     double keywordFontSize = 16;
     return Text(
-      "KeywordKeywordKeywordKeywordKeywordKeywordKeywordKeywordKeywordKeywordKeywordKeywordKeyword",
+      title,
       style: TextStyle(fontSize: keywordFontSize, color: Colors.black),
       textAlign: TextAlign.justify,
       overflow: TextOverflow.ellipsis,
       maxLines: 3,);
   }
 
-  Widget _buidItemTimeText(){
+  Widget _buidItemTimeText(String publishAt){
     double keywordFontSize = 12;
     return Text(
-      "KeywordKeywordKeywordKeywordKeywordKeywordKeywordKeywordKeywordKeywordKeywordKeywordKeyword",
+      publishAt,
       style: TextStyle(fontSize: keywordFontSize, color: Colors.grey[600]),
       textAlign: TextAlign.justify,
       overflow: TextOverflow.ellipsis,
@@ -116,7 +159,7 @@ class _SearchResultPageState extends State<SearchResultPage> {
     return Padding(padding: EdgeInsets.symmetric(vertical: 4),child: widget,);
   }
 
-  Widget _buildItemContent(){
+  Widget _buildItemContent(SearchUIItem searchUIItem){
     double topBottomPadding = 10;
     return Padding(
       padding: EdgeInsets.symmetric(
@@ -130,8 +173,8 @@ class _SearchResultPageState extends State<SearchResultPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              _buildTextPadding(_buidItemTitleText()),
-              _buildTextPadding(_buidItemTimeText())
+              _buildTextPadding(_buidItemTitleText(searchUIItem.title)),
+              _buildTextPadding(_buidItemTimeText(searchUIItem.publishAt))
             ],),),
           Padding(
             padding: EdgeInsets.only(left: 10),
@@ -141,11 +184,11 @@ class _SearchResultPageState extends State<SearchResultPage> {
   }
 
 
-  Widget getRow(int i) {
+  Widget getRow(SearchUIItem searchUIItem) {
     return Container(
         color: Colors.white,
         child: Column(children: <Widget>[
-          _buildItemContent(),
+          _buildItemContent(searchUIItem),
           LineWidget(Colors.grey[400])
         ],)
     );

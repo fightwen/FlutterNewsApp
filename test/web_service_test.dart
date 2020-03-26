@@ -27,7 +27,7 @@ void main() {
     await tester.pumpWidget(
       Builder(
         builder: (BuildContext context) {
-          var service = Webservice();
+          var service = WebService();
 
           //success
           service.client = MockClient((request) async {
@@ -70,7 +70,7 @@ void main() {
     await tester.pumpWidget(
       Builder(
         builder: (BuildContext context) {
-          var service = Webservice();
+          var service = WebService();
 
           //KEY_TOP
           Future<NewsItem> result = service.getNewsItemListFile(context,KEY_TOP);
@@ -107,7 +107,7 @@ void main() {
   });
 
   test('mappingLoadingNewsJson', () {
-    var service = Webservice();
+    var service = WebService();
     String result = service.mappingLoadingNewsJson(KEY_BUSINESS);
     expect(result, "assets/texts/newItemsBusiness.json");
 
