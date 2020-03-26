@@ -4,6 +4,9 @@ import 'package:flutter_news_app/style/app_paddings.dart';
 import 'package:flutter_news_app/views/line_widget.dart';
 
 class SearchResultPage extends StatefulWidget {
+  String keyword;
+  SearchResultPage({@required this.keyword});
+
   @override
   State<StatefulWidget> createState() {
     return _SearchResultPageState();
