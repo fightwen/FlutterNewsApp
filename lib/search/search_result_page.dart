@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_news_app/news/news_detail_page.dart';
+import 'package:flutter_news_app/search/search_bookmark_inheritedwidget.dart';
 import 'package:flutter_news_app/style/app_paddings.dart';
 import 'package:flutter_news_app/views/line_widget.dart';
 import 'package:flutter_news_app/views/network_error_widget.dart';
@@ -13,8 +14,10 @@ const String TW = "TW";
 const String US = "US";
 const String JP = "JP";
 
+
 class SearchResultPage extends StatefulWidget {
   String keyword;
+
   SearchResultPage({@required this.keyword});
 
   @override
@@ -25,6 +28,9 @@ class SearchResultPage extends StatefulWidget {
 
 class _SearchResultPageState extends State<SearchResultPage> {
   SearchController searchController= SearchController();
+  String groupValue = ALL;
+  String language="";
+  Color selectColor = Colors.white;
 
   Widget _buildResultText(String searchResultText) {
     return Padding(
@@ -37,6 +43,24 @@ class _SearchResultPageState extends State<SearchResultPage> {
         ),),);
   }
 
+  void updateSegmentControl(String value){
+    groupValue = value;
+    switch(value){
+      case ALL:
+        language = "";
+        break;
+      case TW:
+        language = "zh";
+        break;
+      case US:
+        language = "en";
+        break;
+      case JP:
+        language = "jp";
+        break;
+    }
+  }
+
   Widget _buildNavigationBar(){
     return Padding(
       padding:EdgeInsets.symmetric(horizontal: AppPaddings.leftPadding),
@@ -45,12 +69,15 @@ class _SearchResultPageState extends State<SearchResultPage> {
           Expanded(
             child: CupertinoSegmentedControl(
               padding: EdgeInsets.only(top:AppPaddings.topBottomPadding,bottom: AppPaddings.topBottomPadding),
+              groupValue: groupValue,
               pressedColor: Colors.black,
-              selectedColor: Colors.grey,
+              selectedColor: Colors.black,
               borderColor: Colors.black,
               unselectedColor: Colors.white,
               onValueChanged: (String newValue) {
-
+                setState(() {
+                  updateSegmentControl(newValue);
+                });
               },
               children: getChilds(),
             ),
@@ -67,18 +94,22 @@ class _SearchResultPageState extends State<SearchResultPage> {
             bottom: AppPaddings.topBottomPadding),
         child: FutureBuilder<List<SearchUIItem>>(
             future: searchController.getSearchUIItemList(
-                context, widget.keyword, "zh"),
+                context, widget.keyword, language),
             builder: (context, snapshot) {
               if (snapshot.hasError) return NetworkErrorWidget();
               return snapshot.hasData && snapshot.data != null &&
                   snapshot.data.length != 0
-                  ? _buildSearchedView(snapshot.data.length, snapshot.data)
+                  ? SearchBookmarkInheritedWidget(
+                      list: snapshot.data,
+                      child:_buildSearchedView(snapshot.data.length))
                   : Center(child: CircularProgressIndicator());
             }
         ));
   }
+  
 
-  Widget _buildSearchedView(int length,List<SearchUIItem> searchUIItems) {
+  Widget _buildSearchedView(int length) {
+
     return Column(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -86,45 +117,54 @@ class _SearchResultPageState extends State<SearchResultPage> {
           _buildResultText(length.toString() + " results"),
           _buildNavigationBar(),
           Expanded(
-              child: getListView(length, searchUIItems)
-
+              child: getListView(length) ,
           ),
         ]);
   }
 
 
 
-  Widget _buildNavigateText(String text){
+  Widget _buildNavigateText(String text,String selectValue,String groupValue){
     double textPadding = 8;
     return Padding(
       padding:EdgeInsets.symmetric(vertical: textPadding),
-      child:Text(text,style: TextStyle(color: Colors.pink),) ,);
+      child:Text(text,style: TextStyle(color: _buildNavigateTextColor(selectValue,groupValue)),) ,);
+  }
+
+  Color _buildNavigateTextColor(String value,String groupValue){
+    if(value == groupValue){
+      return Colors.white;
+    }
+    return Colors.black;
   }
 
   Map<String, Widget> getChilds() {
     Map<String, Widget> maps = Map<String, Widget>();
-    maps.putIfAbsent(ALL, () => _buildNavigateText(ALL));
-    maps.putIfAbsent(TW, () => _buildNavigateText(TW));
-    maps.putIfAbsent(US, () => _buildNavigateText(US));
-    maps.putIfAbsent(JP, () => _buildNavigateText(JP));
+    maps.putIfAbsent(ALL, () => _buildNavigateText(ALL,ALL,groupValue));
+    maps.putIfAbsent(TW, () => _buildNavigateText(TW,TW,groupValue));
+    maps.putIfAbsent(US, () => _buildNavigateText(US,US,groupValue));
+    maps.putIfAbsent(JP, () => _buildNavigateText(JP,JP,groupValue));
     return maps;
   }
 
-  ListView getListView(int length,List<SearchUIItem> searchUIItems) => ListView.builder(
+  ListView getListView(int length) => ListView.builder(
       itemCount: length,
       itemBuilder: (BuildContext context, int position) {
-        return _buildRowWithTap(context,searchUIItems[position]);
+        SearchBookmarkInheritedWidget widget = SearchBookmarkInheritedWidget.of(context);
+        List<SearchUIItem> list = widget == null || widget.list ==null? List<SearchUIItem>():widget.list;
+        return _buildRowWithTap(context,list[position]);
       });
 
   void onPressedCard(BuildContext context, SearchUIItem uiItem) async {
-//    var result =  await Navigator.push(
-//        context, MaterialPageRoute(builder: (context) =>
-//        NewsDetailPageRoute(
-//            initialUrl: uiItem.url,
-//            title: uiItem.title,
-//            isAddedBookmark: uiItem.isAddedBookmark,
-//            newsBookmarkDBItem: uiItem.dbItem)));
-
+    var dbItem = searchController.getNewsBookmarkDBItem(uiItem.articlesFromServer);
+    var result =  await Navigator.push(
+        context, MaterialPageRoute(builder: (context) =>
+        NewsDetailPageRoute(
+            initialUrl: uiItem.url,
+            title: uiItem.title,
+            isAddedBookmark: uiItem.isAddedBookmark,
+            newsBookmarkDBItem: dbItem)));
+    SearchBookmarkInheritedWidget.of(context).updateBookmark(dbItem.name, result);
   }
 
   Widget _buildRowWithTap(BuildContext context,SearchUIItem searchUIItem){

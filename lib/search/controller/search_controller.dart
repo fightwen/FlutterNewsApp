@@ -8,6 +8,7 @@ import 'package:flutter_news_app/network/web_service.dart';
 import 'package:flutter_news_app/search/data/search_ui_item.dart';
 import 'package:flutter_news_app/tool/md5_tool.dart';
 
+import '../../news/data/news_item.dart';
 import '../file/search_keywords_file.dart';
 
 class SearchController {
@@ -41,5 +42,18 @@ class SearchController {
     });
 
     return list;
+  }
+
+  NewsBookmarkDBItem getNewsBookmarkDBItem(Articles articles){
+    return NewsBookmarkDBItem(
+        name: generateMd5(articles.title == null?"":articles.title),
+        title: articles.title == null?"": articles.title,
+        author: articles.author,
+        publishedAt: articles.publishedAt,
+        url: articles.url,
+        urlToImage: articles.urlToImage,
+        savedAt: 0,
+        description: articles.description,
+        content: articles.content);
   }
 }
