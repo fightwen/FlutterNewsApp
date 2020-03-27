@@ -8,6 +8,7 @@ import 'package:flutter_news_app/database/news_database.dart';
 import 'package:flutter_news_app/home/data/tab_page_generater.dart';
 import 'package:flutter_news_app/news/data/news_item.dart';
 import 'package:flutter_news_app/news/data/news_ui_item.dart';
+import 'package:flutter_news_app/search/search_result_page.dart';
 import 'package:flutter_news_app/tool/md5_tool.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
@@ -18,9 +19,9 @@ class WebService {
 
   // Parses newsItems.json File
   Future<NewsItem> getSearchNewsItemList(BuildContext context,String qkey,String lang) async {
-//    if(isLocalTest){
-//      return getNewsItemListFile(context,qkey);
-//    }
+    if(isLocalTest){
+      return getSearchBitcoinListFile(context,qkey,lang);
+    }
     return fetchSearchNews(qkey,lang);
   }
 
@@ -84,6 +85,23 @@ class WebService {
     return list;
   }
 
+  // Parses searchBitcoin.json File
+  Future<NewsItem> getSearchBitcoinListFile(BuildContext context,String qkey,String lang) async {
+
+    String loadString = mappingLoadingSearchJson(qkey,lang);
+
+    if(loadString == null || loadString.isEmpty){
+      return null;
+    }
+
+    String jsonString = await DefaultAssetBundle.of(context).loadString(loadString);
+    Map<String,dynamic> jsonData = jsonDecode(jsonString);
+
+
+    NewsItem newsItems = NewsItem.fromJson(jsonData);
+    return newsItems;
+  }
+
 
   // Parses newsItems.json File
   Future<NewsItem> getNewsItemListFile(BuildContext context,String qkey) async {
@@ -125,6 +143,32 @@ class WebService {
       case KEY_TECHNOLOGY:
         loadString = "assets/texts/newItemsTechnology.json";
         break;
+    }
+    return loadString;
+  }
+
+  String mappingLoadingSearchJson(String qkey,String lang){
+
+
+    String loadString = "assets/texts/searchBitcoinEmpty.json";
+
+    if(qkey != "bitcoin"){
+      return loadString;
+    }
+    switch(lang){
+      case "":
+        loadString = "assets/texts/searchBitcoin.json";
+        break;
+      case "zh":
+        loadString = "assets/texts/searchBitcoinZh.json";
+        break;
+      case "en":
+        loadString = "assets/texts/searchBitcoinEn.json";
+        break;
+      case "jp":
+        loadString = "assets/texts/searchBitcoinJp.json";
+        break;
+
     }
     return loadString;
   }

@@ -58,6 +58,11 @@ flutter:
     - assets/texts/newItemsScience.json
     - assets/texts/newItemsSports.json
     - assets/texts/newItemsTechnology.json
+    - assets/texts/searchBitcoin.json
+    - assets/texts/searchBitcoinEn.json
+    - assets/texts/searchBitcoinZh.json
+    - assets/texts/searchBitcoinJp.json
+    - assets/texts/searchBitcoinEmpty.json
     - assets/images/no_connection.png
     - assets/images/delete.png
     - assets/images/trash_icon.png
