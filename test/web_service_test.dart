@@ -27,7 +27,7 @@ void main() {
     await tester.pumpWidget(
       Builder(
         builder: (BuildContext context) {
-          var service = Webservice();
+          var service = WebService();
 
           //success
           service.client = MockClient((request) async {
@@ -70,7 +70,7 @@ void main() {
     await tester.pumpWidget(
       Builder(
         builder: (BuildContext context) {
-          var service = Webservice();
+          var service = WebService();
 
           //KEY_TOP
           Future<NewsItem> result = service.getNewsItemListFile(context,KEY_TOP);
@@ -107,7 +107,7 @@ void main() {
   });
 
   test('mappingLoadingNewsJson', () {
-    var service = Webservice();
+    var service = WebService();
     String result = service.mappingLoadingNewsJson(KEY_BUSINESS);
     expect(result, "assets/texts/newItemsBusiness.json");
 
@@ -126,5 +126,109 @@ void main() {
     result = service.mappingLoadingNewsJson(KEY_TECHNOLOGY);
     expect(result, "assets/texts/newItemsTechnology.json");
   });
+
+
+  //search page api test
+  testWidgets('WebService fetchSearchNews test', (WidgetTester tester) async {
+
+    await tester.pumpWidget(
+      Builder(
+        builder: (BuildContext context) {
+          var service = WebService();
+
+          //success
+          service.client = MockClient((request) async {
+            final mapJson = await DefaultAssetBundle.of(context).loadString(service.mappingLoadingSearchJson("bitcoin", "zh"));
+            return Response(jsonEncode(mapJson),200);
+
+
+          });
+
+          var result = service.fetchSearchNews("bitcoin","zh");
+          result.then((value) =>{
+            expect(value.status, "ok")
+          } );
+
+          //error
+          service.client = MockClient((request) async {
+            final mapJson = await DefaultAssetBundle.of(context).loadString(service.mappingLoadingNewsJson(""));
+            return Response(jsonEncode(mapJson),400);
+
+
+          });
+
+          result = service.fetchSearchNews("","");
+          result.catchError((error){
+            expect(error!=null, true);
+          });
+
+
+          // The builder function must return a widget.
+          return Placeholder();
+        },
+      ),
+    );
+
+  });
+
+
+  testWidgets('WebService getSearchBitcoinListFile test', (WidgetTester tester) async {
+
+    await tester.pumpWidget(
+      Builder(
+        builder: (BuildContext context) {
+          var service = WebService();
+
+          //KEY_TOP
+          Future<NewsItem> result = service.getSearchBitcoinListFile(context,"bitcoin","zh");
+          result.then((data) => {
+            expect(data!= null && data.articles.length == data.totalResults, true)
+          });
+
+          result.then((data) => {
+            expect(data!= null && data.status == "ok", true)
+          });
+
+          //KEY_BUSINESS
+          result = service.getSearchBitcoinListFile(context,"bitcoin","jp");
+          result.then((data) => {
+            expect(data!= null && data.articles.length == data.totalResults, true)
+          });
+
+          result.then((data) => {
+            expect(data!= null && data.status == "ok", true)
+          });
+
+          //error
+          result = service.getSearchBitcoinListFile(context,"","");
+          result.then((data) => {
+            expect(data.articles.length == 0, true)
+          });
+
+          // The builder function must return a widget.
+          return Placeholder();
+        },
+      ),
+    );
+
+  });
+
+  test('mappingLoadingSearchJson', () {
+    var service = WebService();
+    String result = service.mappingLoadingSearchJson("bitcoin", "zh");
+    expect(result, "assets/texts/searchBitcoinZh.json");
+
+    result = service.mappingLoadingSearchJson("bitcoin", "en");
+    expect(result, "assets/texts/searchBitcoinEn.json");
+
+    result = service.mappingLoadingSearchJson("bitcoin", "jp");
+    expect(result, "assets/texts/searchBitcoinJp.json");
+
+    result = service.mappingLoadingSearchJson("bitcoin", "");
+    expect(result, "assets/texts/searchBitcoin.json");
+
+
+  });
+
 
 }

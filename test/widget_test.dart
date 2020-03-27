@@ -13,6 +13,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_news_app/main.dart';
 
 void main() {
+
+
   testWidgets('NewsApp test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(NewsApp());
