@@ -75,7 +75,7 @@ class _NewsPageListViewState extends State<NewsPageListView>{
               future: controller.getNewsArticleUIItemList(context, qkey),
               builder: (context, snapshot) {
                 if (snapshot.hasError) return NetworkErrorWidget();
-                return snapshot.hasData && snapshot.data != null &&
+                return snapshot.hasData && snapshot.data.isTextOnly!=null && snapshot.data != null &&
                     snapshot.data.newsArticleUIItemList.length != 0
                     ? NewsBookmarkInheritedWidget(
                     list: snapshot.data.newsArticleUIItemList,

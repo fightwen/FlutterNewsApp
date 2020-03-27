@@ -11,7 +11,7 @@ class SettingPreference{
 
   Future<bool> isTextOnlyMode() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var isTextOnly = prefs.getBool(TEXT_ONLY_MODE);
+    var isTextOnly = prefs.getBool(TEXT_ONLY_MODE) == null? false: prefs.getBool(TEXT_ONLY_MODE);
     return isTextOnly;
   }
 
