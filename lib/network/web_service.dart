@@ -6,8 +6,10 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_news_app/database/news_database.dart';
 import 'package:flutter_news_app/home/data/tab_page_generater.dart';
+import 'package:flutter_news_app/news/data/news_article_ui_listInfo.dart';
 import 'package:flutter_news_app/news/data/news_item.dart';
 import 'package:flutter_news_app/news/data/news_ui_item.dart';
+import 'package:flutter_news_app/preferences/setting_preferences.dart';
 import 'package:flutter_news_app/search/search_result_page.dart';
 import 'package:flutter_news_app/tool/md5_tool.dart';
 import 'package:http/http.dart' as http;
@@ -69,23 +71,6 @@ class WebService {
     }
   }
 
-
-  Future<List<NewsArticleUIItem>> getNewsArticleUIItemList(BuildContext context,String qkey) async {
-    List<NewsArticleUIItem> list = List<NewsArticleUIItem>();
-    var result = await getNewsItemList(context,qkey);
-    var dbNewsNameList = await NewsDatabase.newsNames();
-
-    result.articles.forEach((element) {
-
-      list.add(NewsArticleUIItem(title:element.title == null ?"":element.title,
-          url:element.url,
-          urlToImage:element.urlToImage,
-          isAddedBookmark:dbNewsNameList.contains(generateMd5(element.title)),
-          articlesFromServer:element));
-    });
-
-    return list;
-  }
 
   // Parses searchBitcoin.json File
   Future<NewsItem> getSearchBitcoinListFile(BuildContext context,String qkey,String lang) async {

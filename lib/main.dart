@@ -26,7 +26,7 @@ class NewsApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
-  final String title;
+  String title;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -36,10 +36,12 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
   static const double _iconSize = 30;
   final pages = [HomePage(), SearchPage(), BookmarkPage(), SettingsPage()];
+  final pagesTitle = ["News", "Search", "Saved Stories", "Settings"];
 
 
   void _onItemTapped(int index) {
     setState(() {
+      widget.title = pagesTitle[index];
       _selectedIndex = index;
     });
   }

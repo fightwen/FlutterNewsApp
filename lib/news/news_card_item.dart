@@ -10,8 +10,9 @@ import 'news_detail_page.dart';
 import 'news_share_icon.dart';
 
 class NewsCardItem extends StatefulWidget {
+  bool isTextOnly;
   NewsArticleUIItem item;
-  NewsCardItem(this.item);
+  NewsCardItem(this.item,this.isTextOnly);
 
 
   @override
@@ -66,6 +67,24 @@ class NewsCardItemState extends State<NewsCardItem>{
     );
   }
 
+  Widget _buildCardTextOnly() {
+    return Stack(
+      alignment: AlignmentDirectional.bottomStart,
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Text(
+            item.title,
+            style: TextStyle(color: Colors.black, fontSize: 26.0),
+            textAlign: TextAlign.justify,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 3,
+          ),
+        ),
+      ],
+    );
+  }
+
   NewsBookmarkDBItem _getNewsBookmarkDBItem(Articles articles){
     return NewsBookmarkDBItem(
         name: generateMd5(articles.title == null?"":articles.title),
@@ -83,7 +102,7 @@ class NewsCardItemState extends State<NewsCardItem>{
 
     return Column(
       children: <Widget>[
-        _buildCardImage(),
+        widget.isTextOnly?_buildCardTextOnly():_buildCardImage(),
         _buildCardToolbar(isAdded,dbItem)
       ],
     );
