@@ -15,6 +15,8 @@ import 'package:http/http.dart';
 
 class WebService {
   bool isLocalTest = true;
+  final int CONNECT_SUCCESS = 200;
+  final String SEARCH_KEY = "bitcoin";
   Client client = Client();
 
   // Parses newsItems.json File
@@ -32,12 +34,12 @@ class WebService {
       url = "https://gitlab.com/fightmz/testinfo/-/raw/master/search_"+qkey+".json";
     }
 
-    if(qkey != "bitcoin"){
+    if(qkey != SEARCH_KEY){
       url = "https://gitlab.com/fightmz/testinfo/-/raw/master/search_empty.json";
     }
 
     final response = await client.get(url);
-    if(response.statusCode == 200) {
+    if(response.statusCode == CONNECT_SUCCESS) {
 
       final body = jsonDecode(response.body);
       return NewsItem.fromJson(body);
@@ -58,7 +60,7 @@ class WebService {
 
     final url = "https://gitlab.com/fightmz/testinfo/-/raw/master/news_"+qkey+".json";
     final response = await client.get(url);
-    if(response.statusCode == 200) {
+    if(response.statusCode == CONNECT_SUCCESS) {
 
       final body = jsonDecode(response.body);
       return NewsItem.fromJson(body);
@@ -152,7 +154,7 @@ class WebService {
 
     String loadString = "assets/texts/searchBitcoinEmpty.json";
 
-    if(qkey != "bitcoin"){
+    if(qkey != SEARCH_KEY){
       return loadString;
     }
     switch(lang){
