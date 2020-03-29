@@ -1,16 +1,9 @@
 # flutter_news_app
 
-A new Flutter application.
+This cross-platform app is to demo how to use flutter framework.
 
-## Getting Started
+A new Flutter application for Global News. It designed with reference CNN user interface and news articles are powered by News API. We can save News articles in the Saved Stories Page via the database. All of the news articles are searched for three different languages. To avoid high network traffic, just go to the setting page and enable "A text-only view of the Newsfeed". It is easy to build on Android and iOS.
 
-This project is a starting point for a Flutter application.
+## Screenshot
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
