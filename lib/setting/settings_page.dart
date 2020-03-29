@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_news_app/news/news_detail_page.dart';
 import 'package:flutter_news_app/preferences/setting_preferences.dart';
+import 'package:flutter_news_app/setting/setting_web_page.dart';
 import 'package:flutter_news_app/style/app_colors.dart';
 import 'package:flutter_news_app/views/line_widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -70,9 +72,20 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
+  _launchURL() async {
+    const url = 'https://newsapi.org/';
+    final result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => SettingWebPageRoute(
+              initialUrl: url
+            )));
+  }
+
+
   Widget _buildTextAndChooseBarWithLine(bool isShowBar, String text,
       {String subText}) {
-    return Column(
+    return  Column(
       children: <Widget>[
         _buildTextLineAndChooseBar(isShowBar, text, subText: subText),
         LineWidget(Colors.grey)
@@ -101,7 +114,12 @@ class _SettingsPageState extends State<SettingsPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              _buildTextAndChooseBarWithLine(false, "Privacy Policy"),
+              InkWell(
+                 onTap: (){
+                 _launchURL();
+                 },
+               child:_buildTextAndChooseBarWithLine(false, "Powered by News API")
+              ),
               _buildTextAndChooseBarWithLine(false, "Font Size",
                   subText: "Default"),
               _buildTextAndChooseBarWithLine(true, "Reader Mode",
