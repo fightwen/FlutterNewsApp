@@ -4,7 +4,6 @@ import 'package:flutter_news_app/preferences/setting_preferences.dart';
 import 'package:flutter_news_app/setting/setting_web_page.dart';
 import 'package:flutter_news_app/style/app_colors.dart';
 import 'package:flutter_news_app/views/line_widget.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
