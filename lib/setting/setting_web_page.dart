@@ -71,5 +71,6 @@ class _SettingWebPageRouteState extends State<SettingWebPageRoute> {
       initialUrl: initialUrl,
       javascriptMode: JavascriptMode.unrestricted,
     );
+      return Container();
   }
 }

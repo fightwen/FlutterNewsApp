@@ -15,6 +15,9 @@ class BookmarkPage extends StatefulWidget {
 
 class _BookmarkPageState extends State<BookmarkPage> {
   BookmarkController controller = BookmarkController();
+  // the GlobalKey is needed to animate the list
+  final GlobalKey<AnimatedListState> _listKey = GlobalKey();
+  final List<BookmarkUIItem> _globalListData = List<BookmarkUIItem>();
 
   Widget _buildEmptyView(){
     return Center(child: Column(
@@ -36,11 +39,12 @@ class _BookmarkPageState extends State<BookmarkPage> {
                 if(snapshot.connectionState == ConnectionState.waiting){
                   return Center(child: CircularProgressIndicator(),);
                 }
+                _globalListData.addAll(snapshot.data);
 
                 return snapshot.hasData &&
                         snapshot.data != null &&
                         snapshot.data.length != 0
-                    ? getListView(snapshot.data.length, snapshot.data)
+                    ? getListView(_globalListData.length, _globalListData)
                     : _buildEmptyView();
               })),
       floatingActionButton: FloatingActionButton(
@@ -110,17 +114,30 @@ class _BookmarkPageState extends State<BookmarkPage> {
     );
   }
 
-  ListView getListView(int length, List<BookmarkUIItem> list) {
-    return ListView.builder(
-        itemCount: length,
-        itemBuilder: (BuildContext context, int position) {
-          return getRow(list[position]);
+
+  AnimatedList getListView(int length, List<BookmarkUIItem> list) {
+    return AnimatedList(
+        key: _listKey,
+        initialItemCount: length,
+        itemBuilder: (BuildContext context, int position,animation) {
+          return _buildItem(animation,position,list[position]);
         });
   }
 
-  Widget getRow(BookmarkUIItem uiItem) {
-    return BookmarkCardItem(uiItem, () {
-      setState(() {});
+  Widget _buildItem(Animation animation,int index,BookmarkUIItem uiItem){
+    return SizeTransition(
+      sizeFactor: animation,
+      child: getRow(uiItem,index),);
+  }
+
+  Widget getRow(BookmarkUIItem uiItem,int index) {
+    return BookmarkCardItem(uiItem,index, (removeIndex,removeUiItem) {
+      _globalListData.removeAt(removeIndex);
+      AnimatedListRemovedItemBuilder builder = (context, animation) {
+        // A method to build the Card widget.
+        return _buildItem(animation,removeIndex,removeUiItem);
+      };
+      _listKey.currentState.removeItem(removeIndex, builder);
     });
   }
 }
