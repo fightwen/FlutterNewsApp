@@ -14,6 +14,9 @@ A new Flutter application for Global News. It designed with reference CNN user i
 - **flutter_localizations** (i18n)
 - **path_provider** (local File)
 
+## Data
+- Powered by News API (https://newsapi.org/)
+
 ## Screenshot
 - ### iOS 11 Pro Simulator
 ![Alt text](https://github.com/fightwen/FlutterNewsApp/blob/master/screenshot/Apr-06-2020%2018-03-35.gif)
