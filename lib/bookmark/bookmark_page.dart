@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_news_app/bookmark/bookmark_card_item.dart';
 import 'package:flutter_news_app/database/news_database.dart';
+import 'package:flutter_news_app/generated/i18n.dart';
 import 'package:flutter_news_app/views/network_error_widget.dart';
 
 import 'controller/bookmark_controller.dart';
@@ -24,7 +25,7 @@ class _BookmarkPageState extends State<BookmarkPage> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
       Icon(Icons.note_add,size:150,color: Colors.grey[400],),
-      Text("Empty list",style: TextStyle(fontSize: 18),)
+      Text(S.of(context).no_stories,style: TextStyle(fontSize: 18),)
     ],) );
   }
 
@@ -95,15 +96,15 @@ class _BookmarkPageState extends State<BookmarkPage> {
       itemBuilder: (context) => [
         PopupMenuItem(
           value: 1,
-          child: Text("Clear All"),
+          child: Text(S.of(context).clear_all),
         ),
         PopupMenuItem(
           value: 2,
-          child: Text("Older than 1 week"),
+          child: Text(S.of(context).older_than_1_week),
         ),
         PopupMenuItem(
           value: 3,
-          child: Text("Older than 1 month"),
+          child: Text(S.of(context).older_than_1_month),
         ),
       ],
       offset: Offset(80, -180),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_news_app/generated/i18n.dart';
 import 'package:flutter_news_app/search/recent_search_page.dart';
 import 'package:flutter_news_app/search/controller/search_controller.dart';
 import 'package:flutter_news_app/search/search_result_page.dart';
@@ -52,7 +53,7 @@ class _SearchPageState extends State<SearchPage> {
                 },
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintText: 'Find it on News',
+                  hintText: S.of(context).find_it_on_news,
                   suffixIcon: IconButton(
                       onPressed: () => _controller.clear(),
                       icon: Icon(Icons.clear)),
@@ -102,7 +103,7 @@ class _SearchPageState extends State<SearchPage> {
                 });
               },
               child: Text(
-                "Cancel",
+                S.of(context).cancel,
                 style: TextStyle(fontSize: 16),
               ),
             ),

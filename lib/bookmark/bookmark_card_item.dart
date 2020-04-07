@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_news_app/generated/i18n.dart';
 import 'package:flutter_news_app/news/news_detail_page.dart';
 import 'package:flutter_news_app/news/news_share_icon.dart';
 import 'package:flutter_news_app/views/line_widget.dart';
@@ -71,23 +72,23 @@ class BookmarkCardItem extends StatelessWidget {
       barrierDismissible: true, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Remove Article'),
+          title: Text(S.of(context).remove_article),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('Are you sure you want to '),
-                Text('remove this article?'),
+                Text(S.of(context).are_you_sure_you_want_to),
+                Text(S.of(context).remove_this_article),
               ],
             ),
           ),
           actions: <Widget>[
             FlatButton(
-              child: Text('Cancel'),
+              child: Text(S.of(context).cancel),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),FlatButton(
-              child: Text('Remove'),
+              child: Text(S.of(context).remove),
               onPressed: () {
                 NewsDatabase.deleteNews(name);
                 callBackUpdateList(index,uiItem);

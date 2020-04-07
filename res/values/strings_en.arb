@@ -9,6 +9,28 @@
   "health": "Health",
   "science": "Science",
   "sports": "Sports",
-  "technology": "Technology"
+  "technology": "Technology",
+  "no_connection": "No Connection",
+  "try_again": "Try Again",
+  "find_it_on_news": "Find it on News",
+  "cancel": "Cancel",
+  "recent_searches": "Recent Searches",
+  "clear": "Clear",
+  "remove_article": "Remove Article",
+  "are_you_sure_you_want_to": "Are you sure you want to ",
+  "remove_this_article": "remove this article?",
+  "remove": "Remove",
+  "no_stories": "No Stories",
+  "clear_all": "Clear All",
+  "older_than_1_week": "Older than 1 week",
+  "older_than_1_month": "Older than 1 month",
+  "powered_by_news_api": "Powered by News API",
+  "font_size": "Font Size",
+  "default_setting": "Default",
+  "reader_mode": "Reader Mode",
+  "text_only": "A text-only view of the Newsfeed",
+  "version": "Version "
+
+
 
 }
