@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'dart:developer' as developer;
 
 import 'bookmark/bookmark_page.dart';
 import 'database/news_database.dart';
+import 'generated/i18n.dart';
 import 'home/home_page.dart';
 import 'search/search_page.dart';
 import 'setting/settings_page.dart';
@@ -11,15 +13,33 @@ void main() => runApp(NewsApp());
 
 
 class NewsApp extends StatelessWidget {
+
+
   @override
   Widget build(BuildContext context) {
     NewsDatabase.init();
+
     return MaterialApp(
-      title: 'News',
+      localizationsDelegates: [
+        S.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: S.delegate.supportedLocales,
+      title: "News",
       theme: ThemeData(
         primarySwatch: Colors.red,
       ),
-      home: MyHomePage(title: 'News'),
+      home: Builder(
+        builder: (BuildContext context) {
+          return Localizations.override(
+            context: context,
+            locale: Localizations.localeOf(context),
+            child: MyHomePage(title: S.of(context).title),
+          );
+        },
+      ),
     );
   }
 }
@@ -36,12 +56,15 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
   static const double _iconSize = 30;
   final pages = [HomePage(), SearchPage(), BookmarkPage(), SettingsPage()];
-  final pagesTitle = ["News", "Search", "Saved Stories", "Settings"];
+
+  List<String> getPageTitle(BuildContext context){
+    return [S.of(context).title, S.of(context).search, S.of(context).saved_stories, S.of(context).settings];
+  }
 
 
   void _onItemTapped(int index) {
     setState(() {
-      widget.title = pagesTitle[index];
+      widget.title = getPageTitle(context)[index];
       _selectedIndex = index;
     });
   }

@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    List<TabInfo> tabInfos = TabFullPageGenerater.tabInfos;
+    List<TabInfo> tabInfos = TabFullPageGenerater.getTabInfos(context);
     List<Tab> tabs = getTabFullPages(tabInfos);
     return DefaultTabController(
       length: tabs.length,
