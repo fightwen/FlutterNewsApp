@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_news_app/generated/i18n.dart';
 import 'package:flutter_news_app/style/app_paddings.dart';
 import 'package:flutter_news_app/views/network_error_widget.dart';
 
@@ -94,7 +95,7 @@ class _RecentSearchPageState extends State<RecentSearchPage> {
       Expanded(
         child: Padding(
             padding: EdgeInsets.only(left: leftPadding, top: 10, bottom: 10),
-            child: Text("Recent Searches",
+            child: Text(S.of(context).recent_searches,
               style: TextStyle(fontSize: 14, color: Colors.grey[600]),)),),
       Padding(
         padding: EdgeInsets.only(right: rightPadding),
@@ -104,7 +105,7 @@ class _RecentSearchPageState extends State<RecentSearchPage> {
             result.whenComplete(() => {setState(() {})});
           },
           child: Text(
-              "Clear", style: TextStyle(fontSize: 16, color: Colors.red)),),
+              S.of(context).clear, style: TextStyle(fontSize: 16, color: Colors.red)),),
       )
 
     ],);

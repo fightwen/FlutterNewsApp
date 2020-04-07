@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_news_app/generated/i18n.dart';
 import 'package:flutter_news_app/news/news_detail_page.dart';
 import 'package:flutter_news_app/preferences/setting_preferences.dart';
 import 'package:flutter_news_app/setting/setting_web_page.dart';
@@ -117,13 +118,13 @@ class _SettingsPageState extends State<SettingsPage> {
                  onTap: (){
                  _launchURL();
                  },
-               child:_buildTextAndChooseBarWithLine(false, "Powered by News API")
+               child:_buildTextAndChooseBarWithLine(false, S.of(context).powered_by_news_api)
               ),
-              _buildTextAndChooseBarWithLine(false, "Font Size",
-                  subText: "Default"),
-              _buildTextAndChooseBarWithLine(true, "Reader Mode",
-                  subText: "A text-only view of the Newsfeed"),
-              _buildVersionText("Version 6.7"),
+              _buildTextAndChooseBarWithLine(false, S.of(context).font_size,
+                  subText: S.of(context).default_setting),
+              _buildTextAndChooseBarWithLine(true, S.of(context).reader_mode,
+                  subText: S.of(context).text_only),
+              _buildVersionText(S.of(context).version+"1.0"),
             ],
           )
       ),

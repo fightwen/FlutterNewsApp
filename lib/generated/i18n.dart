@@ -21,17 +21,37 @@ class S implements WidgetsLocalizations {
   @override
   TextDirection get textDirection => TextDirection.ltr;
 
+  String get are_you_sure_you_want_to => "Are you sure you want to ";
   String get business => "Business";
+  String get cancel => "Cancel";
+  String get clear => "Clear";
+  String get clear_all => "Clear All";
+  String get default_setting => "Default";
   String get entertainment => "Entertainment";
+  String get find_it_on_news => "Find it on News";
+  String get font_size => "Font Size";
   String get health => "Health";
+  String get no_connection => "No Connection";
+  String get no_stories => "No Stories";
+  String get older_than_1_month => "Older than 1 month";
+  String get older_than_1_week => "Older than 1 week";
+  String get powered_by_news_api => "Powered by News API";
+  String get reader_mode => "Reader Mode";
+  String get recent_searches => "Recent Searches";
+  String get remove => "Remove";
+  String get remove_article => "Remove Article";
+  String get remove_this_article => "remove this article?";
   String get saved_stories => "Saved Stories";
   String get science => "Science";
   String get search => "Search";
   String get settings => "Settings";
   String get sports => "Sports";
   String get technology => "Technology";
+  String get text_only => "A text-only view of the Newsfeed";
   String get title => "News";
   String get top => "Top News";
+  String get try_again => "Try Again";
+  String get version => "Version ";
 }
 
 class $zh_TW extends S {
@@ -41,27 +61,67 @@ class $zh_TW extends S {
   TextDirection get textDirection => TextDirection.ltr;
 
   @override
-  String get saved_stories => "書籤";
+  String get cancel => "取消";
   @override
-  String get settings => "設定";
+  String get remove_this_article => "刪除這篇文章?";
+  @override
+  String get entertainment => "娛樂";
+  @override
+  String get font_size => "字體大小";
+  @override
+  String get title => "新聞";
+  @override
+  String get remove => "刪除";
+  @override
+  String get saved_stories => "書籤";
   @override
   String get search => "搜尋";
   @override
   String get top => "最新新聞";
   @override
+  String get powered_by_news_api => "資料來自 News API";
+  @override
+  String get recent_searches => "最近搜尋關鍵字";
+  @override
+  String get text_only => "僅顯示文字";
+  @override
+  String get reader_mode => "閱讀模式";
+  @override
+  String get settings => "設定";
+  @override
+  String get try_again => "再試一次";
+  @override
   String get business => "商業";
   @override
   String get sports => "運動";
   @override
-  String get entertainment => "娛樂";
+  String get are_you_sure_you_want_to => "您確定您想要 ";
   @override
-  String get science => "科學";
+  String get older_than_1_week => "刪除一個星期前";
+  @override
+  String get clear => "清除";
   @override
   String get health => "保健";
   @override
+  String get no_connection => "網路連線失效";
+  @override
   String get technology => "科技";
   @override
-  String get title => "新聞";
+  String get clear_all => "刪除全部";
+  @override
+  String get version => "版本 ";
+  @override
+  String get no_stories => "您的書籤是空的";
+  @override
+  String get older_than_1_month => "刪除一個月前";
+  @override
+  String get science => "科學";
+  @override
+  String get find_it_on_news => "搜尋新聞列表";
+  @override
+  String get default_setting => "預設";
+  @override
+  String get remove_article => "刪除文章";
 }
 
 class $en extends S {
@@ -75,27 +135,67 @@ class $zh_CN extends S {
   TextDirection get textDirection => TextDirection.ltr;
 
   @override
-  String get saved_stories => "书签";
+  String get cancel => "取消";
   @override
-  String get settings => "设定";
+  String get remove_this_article => "移除这篇文章?";
+  @override
+  String get entertainment => "娱乐";
+  @override
+  String get font_size => "字体大小";
+  @override
+  String get title => "新闻";
+  @override
+  String get remove => "移除";
+  @override
+  String get saved_stories => "书签";
   @override
   String get search => "搜索";
   @override
   String get top => "最新新闻";
   @override
+  String get powered_by_news_api => "资料来自 News API";
+  @override
+  String get recent_searches => "最近搜索关键字";
+  @override
+  String get text_only => "仅显示文字";
+  @override
+  String get reader_mode => "阅读模式";
+  @override
+  String get settings => "设定";
+  @override
+  String get try_again => "再试一次";
+  @override
   String get business => "商业";
   @override
   String get sports => "运动";
   @override
-  String get entertainment => "娱乐";
+  String get are_you_sure_you_want_to => "您確定您想要 ";
   @override
-  String get science => "科学";
+  String get older_than_1_week => "移除一个星期前";
+  @override
+  String get clear => "清除";
   @override
   String get health => "保健";
   @override
+  String get no_connection => "网路连线失效";
+  @override
   String get technology => "科技";
   @override
-  String get title => "新闻";
+  String get clear_all => "移除全部";
+  @override
+  String get version => "版本 ";
+  @override
+  String get no_stories => "您的书签是空的";
+  @override
+  String get older_than_1_month => "移除一个月前";
+  @override
+  String get science => "科学";
+  @override
+  String get find_it_on_news => "搜索新闻列表";
+  @override
+  String get default_setting => "预设";
+  @override
+  String get remove_article => "移除文章";
 }
 
 class GeneratedLocalizationsDelegate extends LocalizationsDelegate<S> {
