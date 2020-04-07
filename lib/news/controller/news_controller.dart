@@ -24,6 +24,7 @@ class NewsController{
           isAddedBookmark:dbNewsNameList.contains(generateMd5(element.title)),
           articlesFromServer:element));
     });
+//    await  Future.delayed(const Duration(milliseconds: 1000));
 
     return NewsArticleUIListInfo(isTextOnly:isTextOnly,newsArticleUIItemList:list);
   }

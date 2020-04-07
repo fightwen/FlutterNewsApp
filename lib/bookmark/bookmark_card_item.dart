@@ -10,9 +10,10 @@ import 'data/bookmark_ui_item.dart';
 
 class BookmarkCardItem extends StatelessWidget {
   BookmarkUIItem uiItem;
-  Function callBackUpdateList;
+  Function(int,BookmarkUIItem) callBackUpdateList;
+  int index = 0;
 
-  BookmarkCardItem(this.uiItem,this.callBackUpdateList);
+  BookmarkCardItem(this.uiItem,this.index,this.callBackUpdateList);
 
   Widget _buildImage() {
     String imgUrl = uiItem.urlToImage == null?'https://rent.dyu.edu.tw/Picture/00/0.jpg':uiItem.urlToImage;
@@ -89,7 +90,7 @@ class BookmarkCardItem extends StatelessWidget {
               child: Text('Remove'),
               onPressed: () {
                 NewsDatabase.deleteNews(name);
-                callBackUpdateList();
+                callBackUpdateList(index,uiItem);
                 Navigator.of(context).pop();
               },
             )
@@ -109,7 +110,7 @@ class BookmarkCardItem extends StatelessWidget {
             newsBookmarkDBItem: uiItem.dbItem)));
 
     if(!result){
-      callBackUpdateList();
+      callBackUpdateList(index,uiItem);
     }
   }
 

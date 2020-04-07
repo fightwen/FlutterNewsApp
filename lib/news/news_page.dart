@@ -3,11 +3,13 @@ import 'package:flutter_news_app/network/web_service.dart';
 import 'package:flutter_news_app/news/controller/news_controller.dart';
 import 'package:flutter_news_app/style/app_colors.dart';
 import 'package:flutter_news_app/views/network_error_widget.dart';
+import 'package:shimmer/shimmer.dart';
 import 'data/news_article_ui_listInfo.dart';
 import 'news_bookmark_inheritedwidget.dart';
 import 'data/news_item.dart';
 import 'data/news_ui_item.dart';
 import 'news_card_item.dart';
+import 'news_page_loading_listView.dart';
 
 
 class NewsPage extends StatelessWidget{
@@ -23,6 +25,8 @@ class NewsPage extends StatelessWidget{
   }
 
 }
+
+
 
 class NewsPageListView extends StatefulWidget{
 
@@ -66,6 +70,8 @@ class _NewsPageListViewState extends State<NewsPageListView>{
     return Container();
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
@@ -81,11 +87,13 @@ class _NewsPageListViewState extends State<NewsPageListView>{
                     list: snapshot.data.newsArticleUIItemList,
                     child: getListView(
                         context, snapshot.data.newsArticleUIItemList.length,
-                        snapshot.data.isTextOnly))
-                    : Center(child: CircularProgressIndicator());
+                        snapshot.data.isTextOnly)) : _buildLoadingView();
               }
           ),
         ));
+  }
+  Widget _buildLoadingView(){
+    return NewsPageLoadingListView();
   }
 
 }

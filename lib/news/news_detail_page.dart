@@ -116,5 +116,6 @@ class _NewsDetailPageRouteState extends State<NewsDetailPageRoute> {
       initialUrl: initialUrl,
       javascriptMode: JavascriptMode.unrestricted,
     );
+     return Container();
   }
 }
