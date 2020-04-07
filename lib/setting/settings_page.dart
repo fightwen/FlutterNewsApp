@@ -124,7 +124,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   subText: S.of(context).default_setting),
               _buildTextAndChooseBarWithLine(true, S.of(context).reader_mode,
                   subText: S.of(context).text_only),
-              _buildVersionText(S.of(context).version+"1.0"),
+              _buildVersionText(S.of(context).version+"1.1"),
             ],
           )
       ),
